@@ -1,0 +1,15 @@
+**Soulcare: Merawat Jiwa Seperti Merawat Wajah**
+
+Aku masih ingat pertama kali mencoba pembersih wajah milik saudaraku. Awalnya hanya iseng, tetapi ternyata rasanya nyaman dan menyegarkan. Aku pun memutuskan untuk membeli sendiri. Setelah itu, aku mulai menambah perawatan dengan pelembap wajah agar kulit tetap sehat dan terhidrasi. Seiring waktu, aku semakin penasaran dan mulai membaca lebih banyak tentang skincare.
+
+Dari membaca, aku menemukan bahwa pembersih wajah ternyata memiliki banyak jenis dan kegunaan. Ada yang diformulasikan untuk mengecilkan pori-pori, ada yang mencerahkan kulit, ada juga yang mengatasi jerawat. Dunia skincare ternyata begitu luas! Aku pun semakin ingin mencoba berbagai produk, hingga akhirnya aku menambah sunscreen, lotion pre-moisturization, dan moisturizer ke dalam rutinitasku. Rasanya begitu menyenangkan bisa merawat kulit dengan produk-produk yang tepat.
+
+Namun, di satu titik, aku mulai merenung. Aku begitu teliti dalam memilih kandungan skincare yang baik untuk wajahku—memastikan produk yang kupakai mengandung bahan yang sesuai dengan kebutuhan kulitku. Aku mencari vitamin untuk kulit, memastikan kelembapan terjaga, dan menghindari bahan-bahan yang bisa merusak kulitku. Tapi bagaimana dengan jiwaku? Bagaimana dengan ragaku?
+
+Aku mulai sadar bahwa seringkali aku lalai dalam merawat aspek lain dalam hidupku. Dalam beribadah, aku sering hanya menjalankan yang wajib saja, bahkan kadang telat, kadang tergesa-gesa. Aku jarang berdoa, jarang berdzikir, dan jarang benar-benar menyadari betapa aku membutuhkan Tuhan dalam segala aspek kehidupanku. Padahal, jika aku bisa sedetail itu dalam merawat kulit wajah, seharusnya aku juga bisa lebih memperhatikan kesehatan jiwaku.
+
+Jiwa dan raga juga memiliki kebutuhan—bukan hanya sekadar makan dan minum, tetapi juga asupan spiritual. Seperti wajah yang memerlukan perlindungan dari sinar matahari dengan sunscreen, jiwa pun memerlukan perlindungan dari hal-hal yang bisa mengotori hati dan pikiran. Seperti kulit yang butuh pelembap agar tetap sehat, jiwa juga butuh siraman iman agar tetap tenang dan kuat menghadapi kehidupan.
+
+Dari sini, aku mulai mencari cara untuk merawat jiwaku sebagaimana aku merawat wajahku. Mungkin ini bisa disebut sebagai *soulcare*. Aku mulai mencoba lebih rajin dalam beribadah, meluangkan waktu untuk berdzikir, berdoa, dan merenungi makna hidup. Aku ingin memastikan bahwa jiwaku juga mendapatkan asupan yang sehat—seperti hati yang tenang, pikiran yang jernih, dan hubungan yang lebih dekat dengan Tuhan.
+
+Kini, aku tidak hanya fokus pada skincare, tetapi juga *soulcare*. Karena aku sadar, sesehat apa pun wajah yang terlihat dari luar, jika jiwa dan raga tidak dirawat dengan baik, kebahagiaan sejati tetap akan sulit diraih.
