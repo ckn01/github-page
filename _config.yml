@@ -1,0 +1,15 @@
+title: My Story Collection
+description: A collection of my personal stories and experiences
+markdown: GFM
+theme: minima
+plugins:
+  - jekyll-feed
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      
+permalink: /:title/ 
