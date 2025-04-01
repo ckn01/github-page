@@ -1,3 +1,9 @@
+---
+layout: post
+title: "Skincare to Soulcare"
+date: 2024-03-20
+---
+
 # Perjalanan Skincare ke Soulcare
 
 Awalnya, saya hanya mencoba pembersih wajah milik saudara. Rasanya menyenangkan, sensasi segar yang membuat saya penasaran. Dari situ, saya mulai membeli produk sendiri - pembersih wajah dan pelembab dasar.
