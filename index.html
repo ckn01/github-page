@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Story Collection</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>My Story Collection</h1>
+        <p>A collection of my personal stories and experiences</p>
+    </header>
+
+    <main>
+        <div id="stories-list">
+            <!-- Stories will be loaded here dynamically -->
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2024 My Story Collection. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Function to load and display stories
+        async function loadStories() {
+            try {
+                const response = await fetch('stories/index.json');
+                const stories = await response.json();
+                
+                const storiesList = document.getElementById('stories-list');
+                stories.forEach(story => {
+                    const storyElement = document.createElement('article');
+                    storyElement.className = 'story-preview';
+                    storyElement.innerHTML = `
+                        <h2><a href="stories/${story.filename}">${story.title}</a></h2>
+                        <div class="story-meta">
+                            <span class="date">${story.date}</span>
+                        </div>
+                        <div class="story-excerpt">${story.excerpt}</div>
+                    `;
+                    storiesList.appendChild(storyElement);
+                });
+            } catch (error) {
+                console.error('Error loading stories:', error);
+            }
+        }
+
+        // Load stories when the page loads
+        document.addEventListener('DOMContentLoaded', loadStories);
+    </script>
+</body>
+</html> 
