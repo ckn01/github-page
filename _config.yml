@@ -1,15 +1,40 @@
 title: My Story Collection
 description: A collection of my personal stories and experiences
+author: CKN01
+
+# Build settings
 markdown: GFM
 theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
 
+# Site settings
+show_excerpts: true
+minima:
+  date_format: "%B %-d, %Y"
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /:title/
+
+# Defaults
 defaults:
   - scope:
       path: ""
       type: "posts"
     values:
       layout: "post"
-      
-permalink: /:title/ 
+      author: "CKN01"
+
+# Exclude from processing
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/ 

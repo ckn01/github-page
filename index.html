@@ -1,86 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Story Collection</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-</head>
-<body>
-    <header>
-        <h1>My Story Collection</h1>
-        <p>A collection of my personal stories and experiences</p>
-    </header>
+---
+layout: default
+---
 
-    <main>
-        <div id="stories-list">
-            <!-- Stories will be loaded here dynamically -->
-        </div>
-        <div id="story-content" style="display: none">
-            <!-- Individual story content will be loaded here -->
-        </div>
-    </main>
+<div class="home">
+  {%- if page.title -%}
+    <h1 class="page-heading">{{ page.title }}</h1>
+  {%- endif -%}
 
-    <footer>
-        <p>© 2024 My Story Collection. All rights reserved.</p>
-    </footer>
+  {{ content }}
 
-    <script>
-        // Function to get URL parameters
-        function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-        }
+  {%- if site.posts.size > 0 -%}
+    <h2 class="post-list-heading">{{ page.list_title | default: "Latest Stories" }}</h2>
+    <ul class="post-list">
+      {%- for post in site.posts -%}
+      <li>
+        {%- assign date_format = site.minima.date_format | default: "%B %-d, %Y" -%}
+        <span class="post-meta">{{ post.date | date: date_format }}</span>
+        <h3>
+          <a class="post-link" href="{{ post.url | relative_url }}">
+            {{ post.title | escape }}
+          </a>
+        </h3>
+        {%- if site.show_excerpts -%}
+          {{ post.excerpt }}
+        {%- endif -%}
+      </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
 
-        // Function to load and display a single story
-        async function loadStory(filename) {
-            try {
-                const response = await fetch(filename);
-                const markdown = await response.text();
-                const storyContent = document.getElementById('story-content');
-                storyContent.innerHTML = marked.parse(markdown);
-                storyContent.style.display = 'block';
-                document.getElementById('stories-list').style.display = 'none';
-            } catch (error) {
-                console.error('Error loading story:', error);
-            }
-        }
-
-        // Function to load and display stories list
-        async function loadStories() {
-            try {
-                const storyFile = getUrlParameter('story');
-                if (storyFile) {
-                    await loadStory('stories/' + storyFile);
-                    return;
-                }
-
-                const response = await fetch('stories/index.json');
-                const stories = await response.json();
-                
-                const storiesList = document.getElementById('stories-list');
-                stories.forEach(story => {
-                    const storyElement = document.createElement('article');
-                    storyElement.className = 'story-preview';
-                    storyElement.innerHTML = `
-                        <h2><a href="?story=${story.filename}">${story.title}</a></h2>
-                        <div class="story-meta">
-                            <span class="date">${story.date}</span>
-                        </div>
-                        <div class="story-excerpt">${story.excerpt}</div>
-                    `;
-                    storiesList.appendChild(storyElement);
-                });
-            } catch (error) {
-                console.error('Error loading stories:', error);
-            }
-        }
-
-        // Load stories when the page loads
-        document.addEventListener('DOMContentLoaded', loadStories);
-    </script>
-</body>
-</html> 
+</div> 
