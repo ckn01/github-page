@@ -3,7 +3,7 @@ layout: post
 title: "Menjadi Pemimpin yang Efektif: Pelajaran dari Prinsip P/KP"
 date: 2025-04-07
 ---
-** Menjadi Pemimpin yang Efektif: Pelajaran dari Prinsip P/KP **
+**Menjadi Pemimpin yang Efektif: Pelajaran dari Prinsip P/KP**
 
 Sebagai pimpinan, saya sangat ingin produk SPMB segera diselesaikan oleh tim saya. Saya merasa frustrasi melihat karyawan yang tampak tidak fokus—sibuk dengan media sosial, TikTok, obrolan telepon, dan menonton konten hiburan selama jam kerja. 
 
