@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Manager - Smart AI Assistant for Your Business</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom CSS */
+        .hero-gradient {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        }
+        
+        .feature-card {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pricing-card {
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: scale(1.03);
+        }
+        
+        .popular-plan {
+            position: relative;
+            border: 2px solid #8b5cf6;
+        }
+        
+        .popular-plan::before {
+            content: "Most Popular";
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: #8b5cf6;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .ai-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+        }
+        
+        .scroll-down {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <i class="fas fa-robot text-3xl text-indigo-500 mr-2"></i>
+                <span class="text-2xl font-bold">AI Manager</span>
+            </div>
+            <div class="hidden md:flex space-x-10">
+                <a href="#features" class="hover:text-indigo-400 transition">Features</a>
+                <a href="#how-it-works" class="hover:text-indigo-400 transition">How It Works</a>
+                <a href="#pricing" class="hover:text-indigo-400 transition">Pricing</a>
+                <a href="#testimonials" class="hover:text-indigo-400 transition">Testimonials</a>
+            </div>
+            <div>
+                <button class="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-full font-medium transition">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient py-20">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-5xl font-bold mb-6">Your Business <span class="text-indigo-200">AI Assistant</span></h1>
+                    <p class="text-xl mb-8 text-gray-200">AI Manager automates your workflows, analyzes data, and provides intelligent insights to help you make better business decisions.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button class="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 rounded-full font-bold transition flex items-center justify-center">
+                            <i class="fas fa-play mr-2"></i> Watch Demo
+                        </button>
+                        <button class="border-2 border-white hover:bg-white hover:text-indigo-600 px-8 py-3 rounded-full font-bold transition flex items-center justify-center">
+                            <i class="fas fa-download mr-2"></i> Download App
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <div class="w-80 h-80 bg-indigo-500 rounded-2xl shadow-2xl flex items-center justify-center ai-pulse">
+                            <i class="fas fa-robot text-8xl text-white"></i>
+                        </div>
+                        <div class="absolute -top-6 -left-6 w-24 h-24 bg-purple-500 rounded-full opacity-70"></div>
+                        <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-blue-500 rounded-full opacity-70"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-center mt-10 scroll-down">
+            <a href="#features" class="text-2xl"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Powerful <span class="text-indigo-500">AI Features</span></h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">AI Manager comes packed with cutting-edge artificial intelligence capabilities designed for your business needs.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card p-8 rounded-xl">
+                    <div class="text-indigo-500 text-4xl mb-4">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Data Analysis</h3>
+                    <p class="text-gray-400">Our AI processes your business data to identify trends, patterns, and opportunities you might miss.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card p-8 rounded-xl">
+                    <div class="text-indigo-500 text-4xl mb-4">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Task Automation</h3>
+                    <p class="text-gray-400">Automate repetitive tasks and workflows to save time and reduce human error in your operations.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card p-8 rounded-xl">
+                    <div class="text-indigo-500 text-4xl mb-4">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Smart Chat</h3>
+                    <p class="text-gray-400">Get instant answers to your business questions through our natural language processing interface.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card p-8 rounded-xl">
+                    <div class="text-indigo-500 text-4xl mb-4">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Predictive Alerts</h3>
+                    <p class="text-gray-400">Receive proactive notifications about potential issues before they impact your business.</p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="feature-card p-8 rounded-xl">
+                    <div class="text-indigo-500 text-4xl mb-4">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Customer Insights</h3>
+                    <p class="text-gray-400">Understand your customers better with AI-powered sentiment analysis and behavior prediction.</p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="feature-card p-8 rounded-xl">
+                    <div class="text-indigo-500 text-4xl mb-4">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3">Security Monitoring</h3>
+                    <p class="text-gray-400">Our AI continuously monitors for security threats and vulnerabilities in your systems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 bg-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">How <span class="text-indigo-500">AI Manager</span> Works</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">Simple integration, powerful results. Get started in just a few steps.</p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <div class="relative">
+                        <div class="absolute -left-10 top-1/2 transform -translate-y-1/2 hidden md:block">
+                            <div class="h-64 w-1 bg-indigo-500 rounded-full"></div>
+                        </div>
+                        
+                        <!-- Step 1 -->
+                        <div class="flex items-start mb-10">
+                            <div class="bg-indigo-600 rounded-full h-10 w-10 flex items-center justify-center mr-6 flex-shrink-0">
+                                <span class="font-bold">1</span>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold mb-2">Connect Your Data</h3>
+                                <p class="text-gray-400">Integrate with your existing business tools and databases in minutes through our simple API.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div class="flex items-start mb-10">
+                            <div class="bg-indigo-600 rounded-full h-10 w-10 flex items-center justify-center mr-6 flex-shrink-0">
+                                <span class="font-bold">2</span>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold mb-2">Set Your Goals</h3>
+                                <p class="text-gray-400">Tell AI Manager what you want to achieve - whether it's increasing sales, reducing costs, or improving efficiency.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div class="flex items-start">
+                            <div class="bg-indigo-600 rounded-full h-10 w-10 flex items-center justify-center mr-6 flex-shrink-0">
+                                <span class="font-bold">3</span>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold mb-2">Get AI Insights</h3>
+                                <p class="text-gray-400">Receive actionable recommendations and let AI Manager automate tasks to help you reach your goals.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="bg-gray-700 p-8 rounded-xl shadow-xl max-w-md">
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="flex items-center">
+                                <div class="h-3 w-3 bg-red-500 rounded-full mr-2"></div>
+                                <div class="h-3 w-3 bg-yellow-500 rounded-full mr-2"></div>
+                                <div class="h-3 w-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="text-sm text-gray-400">AI Manager Dashboard</div>
+                        </div>
+                        
+                        <div class="bg-gray-900 rounded-lg p-4 mb-4">
+                            <div class="flex items-center mb-3">
+                                <div class="h-8 w-8 bg-indigo-600 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="font-bold">AI Assistant</div>
+                            </div>
+                            <div class="bg-gray-800 p-3 rounded mb-2">
+                                <p>I've analyzed your Q3 sales data and found 3 key opportunities for growth:</p>
+                            </div>
+                            <div class="bg-indigo-900 p-3 rounded text-sm">
+                                <p>1. Untapped customer segment showing 30% higher conversion potential</p>
+                                <p>2. Underperforming product that could benefit from a pricing adjustment</p>
+                                <p>3. Seasonal trend suggesting optimal timing for marketing campaign</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="text-sm text-gray-400">Automation Status</div>
+                                <div class="text-green-500 text-sm font-bold">ACTIVE</div>
+                            </div>
+                            <div class="h-2 bg-gray-800 rounded-full mb-2">
+                                <div class="h-2 bg-green-500 rounded-full w-3/4"></div>
+                            </div>
+                            <div class="text-xs text-gray-400">Processing 12 automated workflows</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Simple, <span class="text-indigo-500">Transparent</span> Pricing</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">Choose the plan that fits your business needs. No hidden fees.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Basic Plan -->
+                <div class="pricing-card bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold mb-2">Starter</h3>
+                    <p class="text-gray-400 mb-6">Perfect for small businesses</p>
+                    <div class="text-4xl font-bold mb-6">$29<span class="text-xl text-gray-400">/month</span></div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Up to 5 users</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Basic analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Email support</span>
+                        </li>
+                        <li class="flex items-center text-gray-500">
+                            <i class="fas fa-times text-red-500 mr-2"></i>
+                            <span>No automation</span>
+                        </li>
+                        <li class="flex items-center text-gray-500">
+                            <i class="fas fa-times text-red-500 mr-2"></i>
+                            <span>No API access</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gray-700 hover:bg-gray-600 py-3 rounded-lg font-medium transition">
+                        Get Started
+                    </button>
+                </div>
+                
+                <!-- Popular Plan -->
+                <div class="pricing-card popular-plan bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold mb-2">Professional</h3>
+                    <p class="text-gray-400 mb-6">Best for growing businesses</p>
+                    <div class="text-4xl font-bold mb-6">$99<span class="text-xl text-gray-400">/month</span></div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Up to 20 users</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Advanced analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Priority support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Basic automation</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>API access</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-lg font-medium transition">
+                        Get Started
+                    </button>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="pricing-card bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
+                    <p class="text-gray-400 mb-6">For large organizations</p>
+                    <div class="text-4xl font-bold mb-6">Custom</div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Unlimited users</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Premium analytics</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>24/7 support</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Full automation</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Custom integrations</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gray-700 hover:bg-gray-600 py-3 rounded-lg font-medium transition">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">What Our <span class="text-indigo-500">Clients</span> Say</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">Don't just take our word for it. Here's what our customers have to say.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-900 p-8 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 text-xl">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">"AI Manager has transformed how we analyze customer data. We've identified new market segments that increased our revenue by 27% in just two quarters."</p>
+                    <div class="flex items-center">
+                        <div class="h-12 w-12 bg-indigo-600 rounded-full flex items-center justify-center mr-4">
+                            <span class="font-bold">JD</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Jane Doe</h4>
+                            <p class="text-gray-400 text-sm">CEO, TechSolutions Inc.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-900 p-8 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 text-xl">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">"The automation features saved us over 200 hours of manual work per month. Our team can now focus on strategic initiatives instead of repetitive tasks."</p>
+                    <div class="flex items-center">
+                        <div class="h-12 w-12 bg-indigo-600 rounded-full flex items-center justify-center mr-4">
+                            <span class="font-bold">JS</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">John Smith</h4>
+                            <p class="text-gray-400 text-sm">COO, RetailCorp</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-900 p-8 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 text-xl">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mb-6">"The predictive analytics helped us reduce inventory costs by 18% while maintaining 99% fulfillment rates. The insights are incredibly accurate."</p>
+                    <div class="flex items-center">
+                        <div class="h-12 w-12 bg-indigo-600 rounded-full flex items-center justify-center mr-4">
+                            <span class="font-bold">AR</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold">Alex Rivera</h4>
+                            <p class="text-gray-400 text-sm">Supply Chain Director, GlobalGoods</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 hero-gradient">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold mb-6">Ready to Transform Your Business with AI?</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Join thousands of businesses already using AI Manager to work smarter, not harder.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-4 rounded-full font-bold transition text-lg">
+                    Start Free Trial
+                </button>
+                <button class="border-2 border-white hover:bg-white hover:text-indigo-600 px-8 py-4 rounded-full font-bold transition text-lg">
+                    Schedule Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-robot text-3xl text-indigo-500 mr-2"></i>
+                        <span class="text-2xl font-bold">AI Manager</span>
+                    </div>
+                    <p class="text-gray-400">The smartest AI assistant for your business operations and decision making.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Product</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Features</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Pricing</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Integrations</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Updates</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Resources</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Tutorials</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">API Reference</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Press</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-400 mb-4 md:mb-0">
+                    &copy; 2023 AI Manager. All rights reserved.
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Animation for feature cards on scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fadeIn');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.feature-card, .pricing-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
