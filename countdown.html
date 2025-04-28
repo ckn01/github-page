@@ -64,6 +64,22 @@
             70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
             100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
         }
+        
+        .logo-container {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo-img {
+            max-width: 80%;
+            max-height: 80%;
+        }
     </style>
 </head>
 <body class="min-h-screen text-white">
@@ -72,16 +88,16 @@
         <div class="text-center mb-12 z-10">
             <div class="floating mx-auto logo-container mb-6 pulse">
                 <!-- Replace "path-to-your-logo.png" with your actual logo file path -->
-                <img src="logo-bogor.png" alt="SPMB Kota Bogor Logo" class="logo-img">
+                <img src="path-to-your-logo.png" alt="SPMB Kota Bogor Logo" class="logo-img">
             </div>
             <h1 class="text-4xl md:text-5xl font-bold mb-4 glow">SPMB KOTA BOGOR</h1>
-            <p class="text-xl md:text-2xl font-light mb-6">Sistem Penerimaan Murid Baru kota Bogor Tahun Ajaran 2025/2026</p>
+            <p class="text-xl md:text-2xl font-light mb-6">Sistem Penerimaan Murid Baru Kota Bogor Tahun Ajaran 2025/2026</p>
             <div class="w-24 h-1 bg-emerald-400 mx-auto mb-8"></div>
         </div>
         
         <!-- Countdown -->
         <div class="mb-16 z-10">
-            <h2 class="text-center text-2xl font-medium mb-8">Akan Segera Hadir</h2>
+            <h2 class="text-center text-2xl font-medium mb-8">Akan Segera Hadir <br>5 Mei 2025<br>08:00</h2>
             <div class="flex flex-wrap justify-center gap-4">
                 <div class="countdown-box rounded-lg p-6 w-24 text-center">
                     <div class="text-3xl font-bold" id="days">00</div>
@@ -170,7 +186,7 @@
         function updateCountdown() {
             // Set the date we're counting down to (30 days from now)
             const countDownDate = new Date('2025-05-05 08:00');
-            countDownDate.setDate(countDownDate.getDate());
+            countDownDate.setDate(countDownDate.getDate() );
             
             // Update the count down every 1 second
             const x = setInterval(function() {
