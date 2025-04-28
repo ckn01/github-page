@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown SPMB Kota Bogor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .countdown-box {
+            transition: all 0.3s ease;
+        }
+        .countdown-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .gallery-item {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+        .gallery-item img {
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('siswa-bogor.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="hero-section text-white py-20 px-4 md:px-10" style="height: 100vh;">
+        <div class="container mx-auto text-center">
+            <div class="flex justify-center mb-6">
+                <img src="logo-bogor.png" alt="Lambang Kota Bogor" class="h-24">
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">SPMB Kota Bogor 2025</h1>
+            <p class="text-xl md:text-2xl mb-8">Sistem Penerimaan Murid Baru Tahun Ajaran 2025/2026</p>
+            
+            <!-- Countdown -->
+            <div class="max-w-4xl mx-auto bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+                <h2 class="text-2xl font-semibold mb-6">Pendaftaran Dibuka Dalam:</h2>
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="countdown-box bg-blue-600 rounded-lg p-4 text-center">
+                        <div id="days" class="text-4xl font-bold">00</div>
+                        <div class="text-sm uppercase">Hari</div>
+                    </div>
+                    <div class="countdown-box bg-green-600 rounded-lg p-4 text-center">
+                        <div id="hours" class="text-4xl font-bold">00</div>
+                        <div class="text-sm uppercase">Jam</div>
+                    </div>
+                    <div class="countdown-box bg-yellow-600 rounded-lg p-4 text-center">
+                        <div id="minutes" class="text-4xl font-bold">00</div>
+                        <div class="text-sm uppercase">Menit</div>
+                    </div>
+                    <div class="countdown-box bg-red-600 rounded-lg p-4 text-center">
+                        <div id="seconds" class="text-4xl font-bold">00</div>
+                        <div class="text-sm uppercase">Detik</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-10">
+                <a  class="bg-white text-blue-700 font-bold py-3 px-8 rounded-full hover:bg-blue-100 transition duration-300 inline-flex items-center">
+                    <i class="fas fa-calendar-alt mr-2"></i> Pada 5 Mei 2025 Pukul 08:00
+                </a>
+            </div>
+        </div>
+    </header>
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            // Set the date we're counting down to (June 1, 2025)
+            const countdownDate = new Date("2025-05-05 08:00").getTime();
+            
+            // Get current date and time
+            const now = new Date().getTime();
+            
+            // Calculate the difference between now and countdown date
+            const difference = countdownDate - now;
+            
+            // Time calculations for days, hours, minutes and seconds
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            
+            // Display the result
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("minutes").innerHTML = minutes;
+            document.getElementById("seconds").innerHTML = seconds;
+            
+            // If the countdown is finished
+            if (difference < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+                document.getElementById("seconds").innerHTML = "00";
+            }
+        }
+        
+        // Update countdown every second
+        updateCountdown();
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
