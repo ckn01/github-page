@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Prestasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .file-upload {
+            border: 2px dashed #cbd5e0;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload:hover {
+            border-color: #4f46e5;
+            background-color: #f8fafc;
+        }
+        
+        .file-upload.dragover {
+            border-color: #4f46e5;
+            background-color: #eef2ff;
+        }
+        
+        .preview-container {
+            display: none;
+        }
+        
+        .achievement-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+        }
+        
+        .achievement-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden p-6 mb-8">
+            <div class="flex items-center mb-6">
+                <div class="bg-indigo-100 p-3 rounded-full mr-4">
+                    <i class="fas fa-trophy text-indigo-600 text-xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800">Formulir Pendaftaran Prestasi</h1>
+            </div>
+            
+            <div id="achievementFormsContainer">
+                <!-- Achievement forms will be added here dynamically -->
+            </div>
+            
+            <div class="mt-8 text-center">
+                <button id="addAchievementBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300 flex items-center mx-auto">
+                    <i class="fas fa-plus-circle mr-2"></i> Tambah Prestasi
+                </button>
+            </div>
+            
+            <div id="reviewSection" class="mt-12 hidden">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700 border-b pb-2">Review Prestasi</h2>
+                <div id="achievementCardsContainer" class="space-y-4">
+                    <!-- Achievement cards will be added here -->
+                </div>
+                
+                <div class="mt-8 bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <h3 class="font-medium text-blue-800 mb-2">Dokumen Wajib</h3>
+                    <div class="file-upload-container mt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Upload Surat Pernyataan Tanggung Jawab Mutlak (SPTJM)</label>
+                        <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                            <input type="file" id="sptjmUpload" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <div class="flex flex-col items-center justify-center">
+                                <i class="fas fa-file-pdf text-3xl text-red-500 mb-2"></i>
+                                <p class="text-sm text-gray-600">Seret file PDF ke sini atau klik untuk mengunggah</p>
+                                <p class="text-xs text-gray-500 mt-1">Format: PDF (Maks. 2MB)</p>
+                            </div>
+                        </div>
+                        <div id="sptjmPreview" class="preview-container mt-2 flex items-center">
+                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                            <span class="text-sm text-gray-700"></span>
+                            <button class="ml-2 text-red-500 hover:text-red-700">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 flex justify-end">
+                    <button id="submitBtn" class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-8 rounded-lg transition duration-300 flex items-center">
+                        <i class="fas fa-paper-plane mr-2"></i> Kirim Pendaftaran
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let achievementCount = 0;
+            const achievementFormsContainer = document.getElementById('achievementFormsContainer');
+            const addAchievementBtn = document.getElementById('addAchievementBtn');
+            const reviewSection = document.getElementById('reviewSection');
+            const achievementCardsContainer = document.getElementById('achievementCardsContainer');
+            
+            // Add first achievement form by default
+            addAchievementForm();
+            
+            // Event listener for adding new achievement forms
+            addAchievementBtn.addEventListener('click', addAchievementForm);
+            
+            // Function to create a new achievement form
+            function addAchievementForm() {
+                achievementCount++;
+                const formId = `achievementForm_${achievementCount}`;
+                
+                const formHTML = `
+                    <div id="${formId}" class="achievement-form mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200 fade-in">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-700">Prestasi #${achievementCount}</h2>
+                            ${achievementCount > 1 ? `<button class="text-red-500 hover:text-red-700 delete-achievement" data-form-id="${formId}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>` : ''}
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Prestasi</label>
+                            <select class="achievement-type-select w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" required>
+                                <option value="">Pilih Jenis Prestasi</option>
+                                <option value="academic">Prestasi Akademik Bidang Sains/Teknologi/Riset/Inovasi</option>
+                                <option value="non-academic">Prestasi Non-Akademik</option>
+                                <option value="religious">Prestasi Keagamaan</option>
+                                <option value="special">Prestasi Khusus</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Dynamic form sections will be inserted here -->
+                        <div class="dynamic-form-section"></div>
+                        
+                        <div class="flex justify-between mt-6">
+                            <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition duration-300 cancel-btn ${achievementCount === 1 ? 'hidden' : ''}">
+                                Batal
+                            </button>
+                            <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300 save-btn">
+                                Simpan
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                achievementFormsContainer.insertAdjacentHTML('beforeend', formHTML);
+                
+                // Add event listeners to the new form
+                const newForm = document.getElementById(formId);
+                const achievementTypeSelect = newForm.querySelector('.achievement-type-select');
+                const dynamicFormSection = newForm.querySelector('.dynamic-form-section');
+                const saveBtn = newForm.querySelector('.save-btn');
+                const cancelBtn = newForm.querySelector('.cancel-btn');
+                const deleteBtn = newForm.querySelector('.delete-achievement');
+                
+                achievementTypeSelect.addEventListener('change', function() {
+                    updateDynamicFormSection(this.value, dynamicFormSection);
+                });
+                
+                saveBtn.addEventListener('click', function() {
+                    if (validateAchievementForm(newForm)) {
+                        createAchievementCard(newForm, formId);
+                        newForm.querySelector('.dynamic-form-section').innerHTML = '';
+                        newForm.style.display = 'none';
+                        
+                        // Show review section if not already visible
+                        if (reviewSection.classList.contains('hidden')) {
+                            reviewSection.classList.remove('hidden');
+                        }
+                    }
+                });
+                
+                if (cancelBtn) {
+                    cancelBtn.addEventListener('click', function() {
+                        newForm.remove();
+                        achievementCount--;
+                        
+                        // Hide review section if no achievements left
+                        if (achievementCount === 0) {
+                            reviewSection.classList.add('hidden');
+                        }
+                    });
+                }
+                
+                if (deleteBtn) {
+                    deleteBtn.addEventListener('click', function() {
+                        const formIdToDelete = this.getAttribute('data-form-id');
+                        document.getElementById(formIdToDelete).remove();
+                        achievementCount--;
+                        
+                        // Also remove the corresponding card
+                        const cardToRemove = document.querySelector(`.achievement-card[data-form-id="${formIdToDelete}"]`);
+                        if (cardToRemove) {
+                            cardToRemove.remove();
+                        }
+                        
+                        // Update achievement numbers
+                        updateAchievementNumbers();
+                        
+                        // Hide review section if no achievements left
+                        if (achievementCount === 0) {
+                            reviewSection.classList.add('hidden');
+                        }
+                    });
+                }
+                
+                // Initialize file upload functionality
+                initFileUploads(newForm);
+            }
+            
+            // Function to update the dynamic form section based on achievement type
+            function updateDynamicFormSection(achievementType, container) {
+                let formHTML = '';
+                
+                switch (achievementType) {
+                    case 'academic':
+                    case 'non-academic':
+                        formHTML = `
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Jenis prestasi spesifik</label>
+                                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Misal: Olimpiade Matematika" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tingkat prestasi</label>
+                                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" required>
+                                        <option value="">Pilih Tingkat Prestasi</option>
+                                        <option value="school">Satuan Pendidikan</option>
+                                        <option value="city">Kota/Kabupaten</option>
+                                        <option value="province">Provinsi</option>
+                                        <option value="national">Nasional</option>
+                                        <option value="international">Internasional</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Penyelenggara prestasi</label>
+                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 organizer-select" required>
+                                    <option value="">Pilih Penyelenggara</option>
+                                    <option value="government">Pemerintah Pusat</option>
+                                    <option value="local-gov">Pemerintah Daerah</option>
+                                    <option value="bumn">BUMN</option>
+                                    <option value="bumd">BUMD</option>
+                                    <option value="organization">Induk Organisasi</option>
+                                    <option value="other">Lembaga lainnya</option>
+                                </select>
+                                <div class="organizer-name-container mt-2 hidden">
+                                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Nama penyelenggara">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Jenis peserta</label>
+                                <div class="flex space-x-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="participantType" value="individual" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500" checked>
+                                        <span class="ml-2 text-gray-700">Individu/perorangan</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="participantType" value="team" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                        <span class="ml-2 text-gray-700">Beregu/kelompok</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal perolehan prestasi</label>
+                                <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" required>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div class="file-upload-container">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload sertifikat/piagam prestasi</label>
+                                    <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                                        <input type="file" accept=".pdf,.jpg,.jpeg,.png" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <i class="fas fa-file-upload text-3xl text-indigo-500 mb-2"></i>
+                                            <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
+                                            <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, PNG (Maks. 2MB)</p>
+                                        </div>
+                                    </div>
+                                    <div class="preview-container mt-2 flex items-center">
+                                        <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700"></span>
+                                        <button class="ml-2 text-red-500 hover:text-red-700">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="file-upload-container">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload foto/video saat mengikuti lomba</label>
+                                    <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                                        <input type="file" accept=".jpg,.jpeg,.png,.mp4,.mov" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <i class="fas fa-camera text-3xl text-indigo-500 mb-2"></i>
+                                            <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
+                                            <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG, MP4, MOV (Maks. 5MB)</p>
+                                        </div>
+                                    </div>
+                                    <div class="preview-container mt-2 flex items-center">
+                                        <i class="fas fa-file-image text-blue-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700"></span>
+                                        <button class="ml-2 text-red-500 hover:text-red-700">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div class="file-upload-container">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload surat keterangan dari kepala sekolah</label>
+                                    <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                                        <input type="file" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <i class="fas fa-file-pdf text-3xl text-red-500 mb-2"></i>
+                                            <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
+                                            <p class="text-xs text-gray-500 mt-1">Format: PDF (Maks. 2MB)</p>
+                                        </div>
+                                    </div>
+                                    <div class="preview-container mt-2 flex items-center">
+                                        <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700"></span>
+                                        <button class="ml-2 text-red-500 hover:text-red-700">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="file-upload-container">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload surat pernyataan kebenaran piagam</label>
+                                    <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                                        <input type="file" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <i class="fas fa-file-pdf text-3xl text-red-500 mb-2"></i>
+                                            <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
+                                            <p class="text-xs text-gray-500 mt-1">Format: PDF (Maks. 2MB)</p>
+                                        </div>
+                                    </div>
+                                    <div class="preview-container mt-2 flex items-center">
+                                        <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700"></span>
+                                        <button class="ml-2 text-red-500 hover:text-red-700">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Prestasi berjenjang</label>
+                                <div class="flex items-center space-x-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="hasStagedAchievement" value="yes" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                        <span class="ml-2 text-gray-700">Ya</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="hasStagedAchievement" value="no" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500" checked>
+                                        <span class="ml-2 text-gray-700">Tidak</span>
+                                    </label>
+                                </div>
+                                <div class="staged-achievements-container mt-4 hidden">
+                                    <div class="staged-achievement-entry mb-4 p-4 bg-gray-100 rounded-lg">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Tingkat prestasi</label>
+                                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                                    <option value="">Pilih Tingkat</option>
+                                                    <option value="city">Kabupaten/Kota</option>
+                                                    <option value="province">Provinsi</option>
+                                                    <option value="national">Nasional</option>
+                                                    <option value="international">Internasional</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-1">Peringkat</label>
+                                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                                    <option value="">Pilih Peringkat</option>
+                                                    <option value="1">Juara 1</option>
+                                                    <option value="2">Juara 2</option>
+                                                    <option value="3">Juara 3</option>
+                                                    <option value="participation">Partisipasi</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="file-upload-container">
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Upload bukti</label>
+                                            <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                                <div class="flex flex-col items-center justify-center">
+                                                    <i class="fas fa-file-upload text-3xl text-indigo-500 mb-2"></i>
+                                                    <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
+                                                    <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, PNG (Maks. 2MB)</p>
+                                                </div>
+                                            </div>
+                                            <div class="preview-container mt-2 flex items-center">
+                                                <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                                <span class="text-sm text-gray-700"></span>
+                                                <button class="ml-2 text-red-500 hover:text-red-700">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button class="mt-2 text-red-500 hover:text-red-700 text-sm remove-staged-achievement">
+                                            <i class="fas fa-trash-alt mr-1"></i> Hapus
+                                        </button>
+                                    </div>
+                                    <button class="add-staged-achievement bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm py-1 px-3 rounded-lg">
+                                        <i class="fas fa-plus-circle mr-1"></i> Tambah Prestasi Berjenjang
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Memiliki lebih dari 1 bidang prestasi</label>
+                                <div class="flex items-center space-x-4">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="hasMultipleAchievements" value="yes" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                        <span class="ml-2 text-gray-700">Ya</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="hasMultipleAchievements" value="no" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500" checked>
+                                        <span class="ml-2 text-gray-700">Tidak</span>
+                                    </label>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'religious':
+                        formHTML = `
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Jenis prestasi keagamaan</label>
+                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 religious-type-select" required>
+                                    <option value="">Pilih Jenis Prestasi</option>
+                                    <option value="hafiz">Hafiz Al-Qur'an</option>
+                                    <option value="other-religious">Lomba keagamaan lainnya</option>
+                                </select>
+                                <div class="other-religious-container mt-2 hidden">
+                                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Detail lomba keagamaan">
+                                </div>
+                            </div>
+                            
+                            <div class="hafiz-details-container mb-6 hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah juz yang dikuasai</label>
+                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="">Pilih Jumlah Juz</option>
+                                    <option value="3">3 Juz</option>
+                                    <option value="4-6">4-6 Juz</option>
+                                    <option value="7-10">7-10 Juz</option>
+                                    <option value="11-30">11-30 Juz</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal perolehan prestasi</label>
+                                <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" required>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div class="file-upload-container">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload sertifikat/surat keterangan dari Kemenag</label>
+                                    <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                                        <input type="file" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <i class="fas fa-file-pdf text-3xl text-red-500 mb-2"></i>
+                                            <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
+                                            <p class="text-xs text-gray-500 mt-1">Format: PDF (Maks. 2MB)</p>
+                                        </div>
+                                    </div>
+                                    <div class="preview-container mt-2 flex items-center">
+                                        <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700"></span>
+                                        <button class="ml-2 text-red-500 hover:text-red-700">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="file-upload-container">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload surat keterangan dari kepala sekolah</label>
+                                    <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                                        <input type="file" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <i class="fas fa-file-pdf text-3xl text-red-500 mb-2"></i>
+                                            <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
+                                            <p class="text-xs text-gray-500 mt-1">Format: PDF (Maks. 2MB)</p>
+                                        </div>
+                                    </div>
+                                    <div class="preview-container mt-2 flex items-center">
+                                        <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700"></span>
+                                        <button class="ml-2 text-red-500 hover:text-red-700">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'special':
+                        formHTML = `
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Jenis prestasi khusus</label>
+                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 special-type-select" required>
+                                    <option value="">Pilih Jenis Prestasi</option>
+                                    <option value="literacy">Prestasi Literasi</option>
+                                    <option value="scout">Pramuka Garuda</option>
+                                    <option value="scout-event">Partisipasi Kegiatan Pramuka (Jambore)</option>
+                                    <option value="police">Polisi Cilik</option>
+                                    <option value="other-special">Lainnya</option>
+                                </select>
+                                <div class="other-special-container mt-2 hidden">
+                                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Jelaskan prestasi khusus">
+                                </div>
+                            </div>
+                            
+                            <div class="special-details-container">
+                                <!-- Dynamic content based on special achievement type -->
+                                <div class="literacy-details mb-6 hidden">
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Judul karya</label>
+                                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Judul karya literasi">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Jenis karya</label>
+                                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                            <option value="">Pilih Jenis Karya</option>
+                                            <option value="book">Buku</option>
+                                            <option value="article">Artikel</option>
+                                            <option value="poem">Puisi</option>
+                                            <option value="short-story">Cerpen</option>
+                                            <option value="other">Lainnya</option>
+                                        </select>
+                                    </div>
+                                    <div class="file-upload-container">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Upload bukti prestasi</label>
+                                        <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                            <div class="flex flex-col items-center justify-center">
+                                                <i class="fas fa-file-upload text-3xl text-indigo-500 mb-2"></i>
+                                                <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
+                                                <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, PNG (Maks. 2MB)</p>
+                                            </div>
+                                        </div>
+                                        <div class="preview-container mt-2 flex items-center">
+                                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                            <span class="text-sm text-gray-700"></span>
+                                            <button class="ml-2 text-red-500 hover:text-red-700">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="scout-details mb-6 hidden">
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Tingkat Pramuka Garuda</label>
+                                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                            <option value="">Pilih Tingkat</option>
+                                            <option value="siaga">Siaga</option>
+                                            <option value="penggalang">Penggalang</option>
+                                            <option value="penegak">Penegak</option>
+                                        </select>
+                                    </div>
+                                    <div class="file-upload-container">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Upload sertifikat Pramuka Garuda</label>
+                                        <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                            <div class="flex flex-col items-center justify-center">
+                                                <i class="fas fa-file-upload text-3xl text-indigo-500 mb-2"></i>
+                                                <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
+                                                <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, PNG (Maks. 2MB)</p>
+                                            </div>
+                                        </div>
+                                        <div class="preview-container mt-2 flex items-center">
+                                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                            <span class="text-sm text-gray-700"></span>
+                                            <button class="ml-2 text-red-500 hover:text-red-700">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="scout-event-details mb-6 hidden">
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama kegiatan</label>
+                                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Nama kegiatan/jambore">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Tingkat kegiatan</label>
+                                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                            <option value="">Pilih Tingkat</option>
+                                            <option value="city">Kota/Kabupaten</option>
+                                            <option value="province">Provinsi</option>
+                                            <option value="national">Nasional</option>
+                                            <option value="international">Internasional</option>
+                                        </select>
+                                    </div>
+                                    <div class="file-upload-container">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Upload bukti partisipasi</label>
+                                        <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                            <div class="flex flex-col items-center justify-center">
+                                                <i class="fas fa-file-upload text-3xl text-indigo-500 mb-2"></i>
+                                                <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
+                                                <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, PNG (Maks. 2MB)</p>
+                                            </div>
+                                        </div>
+                                        <div class="preview-container mt-2 flex items-center">
+                                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                            <span class="text-sm text-gray-700"></span>
+                                            <button class="ml-2 text-red-500 hover:text-red-700">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="police-details mb-6 hidden">
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Tingkat prestasi</label>
+                                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                            <option value="">Pilih Tingkat</option>
+                                            <option value="city">Kota/Kabupaten</option>
+                                            <option value="province">Provinsi</option>
+                                            <option value="national">Nasional</option>
+                                        </select>
+                                    </div>
+                                    <div class="file-upload-container">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Upload sertifikat/surat keterangan</label>
+                                        <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                            <div class="flex flex-col items-center justify-center">
+                                                <i class="fas fa-file-upload text-3xl text-indigo-500 mb-2"></i>
+                                                <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
+                                                <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, PNG (Maks. 2MB)</p>
+                                            </div>
+                                        </div>
+                                        <div class="preview-container mt-2 flex items-center">
+                                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                            <span class="text-sm text-gray-700"></span>
+                                            <button class="ml-2 text-red-500 hover:text-red-700">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal perolehan prestasi</label>
+                                <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" required>
+                            </div>
+                        `;
+                        break;
+                        
+                    default:
+                        formHTML = '<p class="text-gray-500">Silakan pilih jenis prestasi untuk menampilkan form yang sesuai.</p>';
+                }
+                
+                container.innerHTML = formHTML;
+                
+                // Initialize dynamic elements for the new form section
+                if (achievementType === 'academic' || achievementType === 'non-academic') {
+                    // Organizer select show/hide text input
+                    const organizerSelect = container.querySelector('.organizer-select');
+                    const organizerNameContainer = container.querySelector('.organizer-name-container');
+                    
+                    if (organizerSelect && organizerNameContainer) {
+                        organizerSelect.addEventListener('change', function() {
+                            if (this.value === 'organization' || this.value === 'other') {
+                                organizerNameContainer.classList.remove('hidden');
+                            } else {
+                                organizerNameContainer.classList.add('hidden');
+                            }
+                        });
+                    }
+                    
+                    // Staged achievements
+                    const hasStagedAchievementRadios = container.querySelectorAll('input[name="hasStagedAchievement"]');
+                    const stagedAchievementsContainer = container.querySelector('.staged-achievements-container');
+                    const addStagedAchievementBtn = container.querySelector('.add-staged-achievement');
+                    
+                    hasStagedAchievementRadios.forEach(radio => {
+                        radio.addEventListener('change', function() {
+                            if (this.value === 'yes') {
+                                stagedAchievementsContainer.classList.remove('hidden');
+                            } else {
+                                stagedAchievementsContainer.classList.add('hidden');
+                            }
+                        });
+                    });
+                    
+                    if (addStagedAchievementBtn) {
+                        addStagedAchievementBtn.addEventListener('click', function() {
+                            const newEntry = document.createElement('div');
+                            newEntry.className = 'staged-achievement-entry mb-4 p-4 bg-gray-100 rounded-lg';
+                            newEntry.innerHTML = `
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Tingkat prestasi</label>
+                                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                            <option value="">Pilih Tingkat</option>
+                                            <option value="city">Kabupaten/Kota</option>
+                                            <option value="province">Provinsi</option>
+                                            <option value="national">Nasional</option>
+                                            <option value="international">Internasional</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Peringkat</label>
+                                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500">
+                                            <option value="">Pilih Peringkat</option>
+                                            <option value="1">Juara 1</option>
+                                            <option value="2">Juara 2</option>
+                                            <option value="3">Juara 3</option>
+                                            <option value="participation">Partisipasi</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="file-upload-container">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Upload bukti</label>
+                                    <div class="file-upload relative rounded-lg p-4 text-center cursor-pointer">
+                                        <input type="file" accept=".pdf,.jpg,.jpeg,.png" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <i class="fas fa-file-upload text-3xl text-indigo-500 mb-2"></i>
+                                            <p class="text-sm text-gray-600">Seret file ke sini atau klik untuk mengunggah</p>
+                                            <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, PNG (Maks. 2MB)</p>
+                                        </div>
+                                    </div>
+                                    <div class="preview-container mt-2 flex items-center">
+                                        <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                        <span class="text-sm text-gray-700"></span>
+                                        <button class="ml-2 text-red-500 hover:text-red-700">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button class="mt-2 text-red-500 hover:text-red-700 text-sm remove-staged-achievement">
+                                    <i class="fas fa-trash-alt mr-1"></i> Hapus
+                                </button>
+                            `;
+                            
+                            stagedAchievementsContainer.insertBefore(newEntry, addStagedAchievementBtn);
+                            
+                            // Add event listener for the remove button
+                            const removeBtn = newEntry.querySelector('.remove-staged-achievement');
+                            removeBtn.addEventListener('click', function() {
+                                newEntry.remove();
+                            });
+                            
+                            // Initialize file upload for the new entry
+                            initFileUploads(newEntry);
+                        });
+                    }
+                    
+                    // Remove staged achievement buttons
+                    const removeStagedAchievementBtns = container.querySelectorAll('.remove-staged-achievement');
+                    removeStagedAchievementBtns.forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            this.closest('.staged-achievement-entry').remove();
+                        });
+                    });
+                }
+                
+                if (achievementType === 'religious') {
+                    // Religious type select show/hide elements
+                    const religiousTypeSelect = container.querySelector('.religious-type-select');
+                    const otherReligiousContainer = container.querySelector('.other-religious-container');
+                    const hafizDetailsContainer = container.querySelector('.hafiz-details-container');
+                    
+                    if (religiousTypeSelect) {
+                        religiousTypeSelect.addEventListener('change', function() {
+                            if (this.value === 'hafiz') {
+                                hafizDetailsContainer.classList.remove('hidden');
+                                otherReligiousContainer.classList.add('hidden');
+                            } else if (this.value === 'other-religious') {
+                                otherReligiousContainer.classList.remove('hidden');
+                                hafizDetailsContainer.classList.add('hidden');
+                            } else {
+                                otherReligiousContainer.classList.add('hidden');
+                                hafizDetailsContainer.classList.add('hidden');
+                            }
+                        });
+                    }
+                }
+                
+                if (achievementType === 'special') {
+                    // Special type select show/hide elements
+                    const specialTypeSelect = container.querySelector('.special-type-select');
+                    const otherSpecialContainer = container.querySelector('.other-special-container');
+                    const literacyDetails = container.querySelector('.literacy-details');
+                    const scoutDetails = container.querySelector('.scout-details');
+                    const scoutEventDetails = container.querySelector('.scout-event-details');
+                    const policeDetails = container.querySelector('.police-details');
+                    
+                    if (specialTypeSelect) {
+                        specialTypeSelect.addEventListener('change', function() {
+                            // Hide all details containers first
+                            if (otherSpecialContainer) otherSpecialContainer.classList.add('hidden');
+                            if (literacyDetails) literacyDetails.classList.add('hidden');
+                            if (scoutDetails) scoutDetails.classList.add('hidden');
+                            if (scoutEventDetails) scoutEventDetails.classList.add('hidden');
+                            if (policeDetails) policeDetails.classList.add('hidden');
+                            
+                            // Show the selected one
+                            switch (this.value) {
+                                case 'literacy':
+                                    if (literacyDetails) literacyDetails.classList.remove('hidden');
+                                    break;
+                                case 'scout':
+                                    if (scoutDetails) scoutDetails.classList.remove('hidden');
+                                    break;
+                                case 'scout-event':
+                                    if (scoutEventDetails) scoutEventDetails.classList.remove('hidden');
+                                    break;
+                                case 'police':
+                                    if (policeDetails) policeDetails.classList.remove('hidden');
+                                    break;
+                                case 'other-special':
+                                    if (otherSpecialContainer) otherSpecialContainer.classList.remove('hidden');
+                                    break;
+                            }
+                        });
+                    }
+                }
+                
+                // Initialize file uploads for this form section
+                initFileUploads(container);
+            }
+            
+            // Function to initialize file upload functionality
+            function initFileUploads(container) {
+                const fileUploads = container.querySelectorAll('.file-upload');
+                
+                fileUploads.forEach(upload => {
+                    const fileInput = upload.querySelector('input[type="file"]');
+                    const previewContainer = upload.closest('.file-upload-container').querySelector('.preview-container');
+                    const previewText = previewContainer.querySelector('span');
+                    const removeBtn = previewContainer.querySelector('button');
+                    
+                    // Drag and drop events
+                    upload.addEventListener('dragover', function(e) {
+                        e.preventDefault();
+                        this.classList.add('dragover');
+                    });
+                    
+                    upload.addEventListener('dragleave', function() {
+                        this.classList.remove('dragover');
+                    });
+                    
+                    upload.addEventListener('drop', function(e) {
+                        e.preventDefault();
+                        this.classList.remove('dragover');
+                        if (e.dataTransfer.files.length) {
+                            fileInput.files = e.dataTransfer.files;
+                            handleFileSelection(fileInput, previewContainer, previewText);
+                        }
+                    });
+                    
+                    // Click to upload
+                    upload.addEventListener('click', function(e) {
+                        if (e.target !== fileInput) {
+                            fileInput.click();
+                        }
+                    });
+                    
+                    // File selection handler
+                    fileInput.addEventListener('change', function() {
+                        handleFileSelection(this, previewContainer, previewText);
+                    });
+                    
+                    // Remove file handler
+                    removeBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        fileInput.value = '';
+                        previewContainer.style.display = 'none';
+                    });
+                });
+            }
+            
+            // Function to handle file selection and display preview
+            function handleFileSelection(input, previewContainer, previewText) {
+                if (input.files && input.files.length > 0) {
+                    const file = input.files[0];
+                    previewText.textContent = file.name;
+                    previewContainer.style.display = 'flex';
+                    
+                    // Validate file type and size
+                    const validTypes = input.accept.split(',');
+                    const fileType = file.type;
+                    const fileSize = file.size;
+                    let isValid = false;
+                    
+                    for (let i = 0; i < validTypes.length; i++) {
+                        const type = validTypes[i].trim();
+                        
+                        if (type === '.pdf' && fileType === 'application/pdf') {
+                            isValid = true;
+                            break;
+                        }
+                        
+                        if (type === '.jpg' && (fileType === 'image/jpeg' || fileType === 'image/jpg')) {
+                            isValid = true;
+                            break;
+                        }
+                        
+                        if (type === '.jpeg' && fileType === 'image/jpeg') {
+                            isValid = true;
+                            break;
+                        }
+                        
+                        if (type === '.png' && fileType === 'image/png') {
+                            isValid = true;
+                            break;
+                        }
+                        
+                        if (type === '.mp4' && fileType === 'video/mp4') {
+                            isValid = true;
+                            break;
+                        }
+                        
+                        if (type === '.mov' && fileType === 'video/quicktime') {
+                            isValid = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!isValid) {
+                        alert('Format file tidak valid. Silakan unggah file dengan format yang sesuai.');
+                        input.value = '';
+                        previewContainer.style.display = 'none';
+                        return;
+                    }
+                    
+                    // Check file size (max 2MB for PDF, 5MB for others)
+                    const maxSize = input.accept.includes('.pdf') ? 2 * 1024 * 1024 : 5 * 1024 * 1024;
+                    if (fileSize > maxSize) {
+                        alert('Ukuran file terlalu besar. Silakan unggah file dengan ukuran yang sesuai.');
+                        input.value = '';
+                        previewContainer.style.display = 'none';
+                        return;
+                    }
+                }
+            }
+            
+            // Function to validate achievement form before saving
+            function validateAchievementForm(form) {
+                let isValid = true;
+                const requiredFields = form.querySelectorAll('[required]');
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('border-red-500');
+                        field.classList.remove('border-gray-300');
+                        
+                        // Add error message if not already present
+                        if (!field.nextElementSibling || !field.nextElementSibling.classList.contains('error-message')) {
+                            const errorMsg = document.createElement('p');
+                            errorMsg.className = 'error-message text-red-500 text-xs mt-1';
+                            errorMsg.textContent = 'Field ini wajib diisi';
+                            field.parentNode.insertBefore(errorMsg, field.nextSibling);
+                        }
+                    } else {
+                        field.classList.remove('border-red-500');
+                        field.classList.add('border-gray-300');
+                        
+                        // Remove error message if present
+                        if (field.nextElementSibling && field.nextElementSibling.classList.contains('error-message')) {
+                            field.nextElementSibling.remove();
+                        }
+                    }
+                });
+                
+                // Validate date fields
+                const dateFields = form.querySelectorAll('input[type="date"]');
+                dateFields.forEach(field => {
+                    if (field.value) {
+                        const selectedDate = new Date(field.value);
+                        const currentDate = new Date();
+                        const minDate = new Date('2022-06-02'); // 3 years before June 2, 2025
+                        const maxDate = new Date('2025-06-02');
+                        
+                        if (selectedDate < minDate || selectedDate > maxDate) {
+                            isValid = false;
+                            field.classList.add('border-red-500');
+                            field.classList.remove('border-gray-300');
+                            
+                            // Add error message if not already present
+                            if (!field.nextElementSibling || !field.nextElementSibling.classList.contains('error-message')) {
+                                const errorMsg = document.createElement('p');
+                                errorMsg.className = 'error-message text-red-500 text-xs mt-1';
+                                errorMsg.textContent = 'Tanggal harus antara 2 Juni 2022 dan 2 Juni 2025';
+                                field.parentNode.insertBefore(errorMsg, field.nextSibling);
+                            }
+                        } else {
+                            field.classList.remove('border-red-500');
+                            field.classList.add('border-gray-300');
+                            
+                            // Remove error message if present
+                            if (field.nextElementSibling && field.nextElementSibling.classList.contains('error-message')) {
+                                field.nextElementSibling.remove();
+                            }
+                        }
+                    }
+                });
+                
+                // Validate file uploads
+                const fileUploadContainers = form.querySelectorAll('.file-upload-container');
+                fileUploadContainers.forEach(container => {
+                    const fileInput = container.querySelector('input[type="file"]');
+                    const isRequired = container.querySelector('label').textContent.includes('wajib') || 
+                                      container.querySelector('label').textContent.includes('Upload sertifikat') ||
+                                      container.querySelector('label').textContent.includes('Upload bukti');
+                    
+                    if (isRequired && (!fileInput.files || fileInput.files.length === 0)) {
+                        isValid = false;
+                        const uploadDiv = container.querySelector('.file-upload');
+                        uploadDiv.classList.add('border-red-500');
+                        
+                        // Add error message if not already present
+                        if (!container.querySelector('.error-message')) {
+                            const errorMsg = document.createElement('p');
+                            errorMsg.className = 'error-message text-red-500 text-xs mt-1';
+                            errorMsg.textContent = 'File ini wajib diunggah';
+                            container.appendChild(errorMsg);
+                        }
+                    } else {
+                        const uploadDiv = container.querySelector('.file-upload');
+                        uploadDiv.classList.remove('border-red-500');
+                        
+                        // Remove error message if present
+                        const errorMsg = container.querySelector('.error-message');
+                        if (errorMsg) {
+                            errorMsg.remove();
+                        }
+                    }
+                });
+                
+                if (!isValid) {
+                    // Scroll to the first error
+                    const firstError = form.querySelector('.border-red-500');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // Function to create an achievement card in the review section
+            function createAchievementCard(form, formId) {
+                const achievementType = form.querySelector('.achievement-type-select').value;
+                let cardContent = '';
+                let achievementTitle = '';
+                let achievementDetails = '';
+                
+                switch (achievementType) {
+                    case 'academic':
+                        achievementTitle = 'Prestasi Akademik';
+                        const academicSpecific = form.querySelector('input[type="text"]').value;
+                        const academicLevel = form.querySelector('select').value;
+                        achievementDetails = `${academicSpecific} (${getLevelName(academicLevel)})`;
+                        break;
+                        
+                    case 'non-academic':
+                        achievementTitle = 'Prestasi Non-Akademik';
+                        const nonAcademicSpecific = form.querySelector('input[type="text"]').value;
+                        const nonAcademicLevel = form.querySelector('select').value;
+                        achievementDetails = `${nonAcademicSpecific} (${getLevelName(nonAcademicLevel)})`;
+                        break;
+                        
+                    case 'religious':
+                        achievementTitle = 'Prestasi Keagamaan';
+                        const religiousType = form.querySelector('.religious-type-select').value;
+                        if (religiousType === 'hafiz') {
+                            const juzCount = form.querySelector('.hafiz-details-container select').value;
+                            achievementDetails = `Hafiz Al-Qur'an (${juzCount} Juz)`;
+                        } else {
+                            const otherReligious = form.querySelector('.other-religious-container input').value;
+                            achievementDetails = otherReligious;
+                        }
+                        break;
+                        
+                    case 'special':
+                        achievementTitle = 'Prestasi Khusus';
+                        const specialType = form.querySelector('.special-type-select').value;
+                        if (specialType === 'literacy') {
+                            const workTitle = form.querySelector('.literacy-details input').value;
+                            achievementDetails = `Prestasi Literasi: ${workTitle}`;
+                        } else if (specialType === 'scout') {
+                            achievementDetails = 'Pramuka Garuda';
+                        } else if (specialType === 'scout-event') {
+                            const eventName = form.querySelector('.scout-event-details input').value;
+                            achievementDetails = `Partisipasi Kegiatan Pramuka: ${eventName}`;
+                        } else if (specialType === 'police') {
+                            achievementDetails = 'Polisi Cilik';
+                        } else {
+                            const otherSpecial = form.querySelector('.other-special-container input').value;
+                            achievementDetails = otherSpecial;
+                        }
+                        break;
+                }
+                
+                // Get the date
+                const dateField = form.querySelector('input[type="date"]');
+                const achievementDate = dateField ? new Date(dateField.value).toLocaleDateString('id-ID', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                }) : 'Tanggal tidak tersedia';
+                
+                // Get file upload info
+                const fileUploads = form.querySelectorAll('.file-upload-container');
+                let fileInfo = '';
+                fileUploads.forEach(container => {
+                    const label = container.querySelector('label').textContent;
+                    const fileInput = container.querySelector('input[type="file"]');
+                    
+                    if (fileInput.files && fileInput.files.length > 0) {
+                        fileInfo += `<div class="text-sm text-gray-600 mt-1"><span class="font-medium">${label}:</span> ${fileInput.files[0].name}</div>`;
+                    }
+                });
+                
+                cardContent = `
+                    <div class="achievement-card bg-white p-4 rounded-lg border border-gray-200 mb-4" data-form-id="${formId}">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-semibold text-gray-800">${achievementTitle}</h3>
+                                <p class="text-gray-600">${achievementDetails}</p>
+                                <p class="text-sm text-gray-500 mt-1">Diperoleh pada: ${achievementDate}</p>
+                                ${fileInfo}
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="edit-achievement text-indigo-600 hover:text-indigo-800" data-form-id="${formId}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="delete-achievement-card text-red-500 hover:text-red-700" data-form-id="${formId}">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                achievementCardsContainer.insertAdjacentHTML('beforeend', cardContent);
+                
+                // Add event listeners to the new card
+                const card = document.querySelector(`.achievement-card[data-form-id="${formId}"]`);
+                const editBtn = card.querySelector('.edit-achievement');
+                const deleteBtn = card.querySelector('.delete-achievement-card');
+                
+                editBtn.addEventListener('click', function() {
+                    const formToEdit = document.getElementById(formId);
+                    formToEdit.style.display = 'block';
+                    card.remove();
+                    
+                    // Scroll to the form
+                    formToEdit.scrollIntoView({ behavior: 'smooth' });
+                });
+                
+                deleteBtn.addEventListener('click', function() {
+                    card.remove();
+                    achievementCount--;
+                    
+                    // Hide review section if no achievements left
+                    if (achievementCount === 0) {
+                        reviewSection.classList.add('hidden');
+                    }
+                    
+                    // Update achievement numbers
+                    updateAchievementNumbers();
+                });
+            }
+            
+            // Helper function to get level name
+            function getLevelName(levelValue) {
+                switch (levelValue) {
+                    case 'school': return 'Satuan Pendidikan';
+                    case 'city': return 'Kota/Kabupaten';
+                    case 'province': return 'Provinsi';
+                    case 'national': return 'Nasional';
+                    case 'international': return 'Internasional';
+                    default: return levelValue;
+                }
+            }
+            
+            // Function to update achievement numbers after deletion
+            function updateAchievementNumbers() {
+                const forms = document.querySelectorAll('.achievement-form');
+                const cards = document.querySelectorAll('.achievement-card');
+                
+                forms.forEach((form, index) => {
+                    const formId = form.id.split('_')[1];
+                    const title = form.querySelector('h2');
+                    title.textContent = `Prestasi #${index + 1}`;
+                    
+                    // Update corresponding card title if exists
+                    const card = document.querySelector(`.achievement-card[data-form-id="achievementForm_${formId}"]`);
+                    if (card) {
+                        const cardTitle = card.querySelector('h3');
+                        cardTitle.textContent = cardTitle.textContent.replace(/#\d+/, `#${index + 1}`);
+                    }
+                });
+                
+                // Update cards order if needed
+                cards.forEach((card, index) => {
+                    const cardTitle = card.querySelector('h3');
+                    const currentText = cardTitle.textContent;
+                    const newText = currentText.replace(/#\d+/, `#${index + 1}`);
+                    if (currentText !== newText) {
+                        cardTitle.textContent = newText;
+                    }
+                });
+            }
+            
+            // Initialize file upload for SPTJM
+            const sptjmUpload = document.getElementById('sptjmUpload');
+            const sptjmPreview = document.getElementById('sptjmPreview');
+            const sptjmPreviewText = sptjmPreview.querySelector('span');
+            const sptjmRemoveBtn = sptjmPreview.querySelector('button');
+            
+            sptjmUpload.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    sptjmPreviewText.textContent = this.files[0].name;
+                    sptjmPreview.style.display = 'flex';
+                }
+            });
+            
+            sptjmRemoveBtn.addEventListener('click', function() {
+                sptjmUpload.value = '';
+                sptjmPreview.style.display = 'none';
+            });
+            
+            // Submit button functionality
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.addEventListener('click', function() {
+                // Validate SPTJM upload
+                if (!sptjmUpload.files || sptjmUpload.files.length === 0) {
+                    alert('Anda harus mengunggah Surat Pernyataan Tanggung Jawab Mutlak (SPTJM)');
+                    return;
+                }
+                
+                // Validate at least one achievement
+                if (achievementCount === 0) {
+                    alert('Anda harus menambahkan minimal satu prestasi');
+                    return;
+                }
+                
+                // Show success message
+                alert('Pendaftaran prestasi berhasil dikirim!');
+                
+                // Reset form (for demo purposes)
+                achievementFormsContainer.innerHTML = '';
+                achievementCardsContainer.innerHTML = '';
+                sptjmUpload.value = '';
+                sptjmPreview.style.display = 'none';
+                reviewSection.classList.add('hidden');
+                achievementCount = 0;
+                
+                // Add first achievement form again
+                addAchievementForm();
+            });
+        });
+    </script>
+</body>
+</html>
