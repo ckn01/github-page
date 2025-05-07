@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Prestasi Siswa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .file-upload {
+            border: 2px dashed #cbd5e0;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload:hover {
+            border-color: #4f46e5;
+            background-color: #f8fafc;
+        }
+        
+        .file-upload.dragover {
+            border-color: #4f46e5;
+            background-color: #e0e7ff;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #4f46e5;
+            transition: width 0.3s ease;
+        }
+        
+        .semester-form {
+            border-left: 4px solid #4f46e5;
+        }
+        
+        .toggle-checkbox:checked {
+            right: 0;
+            background-color: #4f46e5;
+        }
+        
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #4f46e5;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-indigo-800 mb-2">Formulir Prestasi Siswa</h1>
+            <p class="text-gray-600">Silakan isi formulir berikut sesuai dengan prestasi yang ingin Anda ajukan</p>
+            
+            <!-- Progress Steps -->
+            <div class="flex justify-between items-center mt-8 mb-6 relative">
+                <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 -z-10"></div>
+                <div class="absolute top-1/2 left-0 h-1 bg-indigo-600 -z-10 transition-all duration-500" id="progress-bar" style="width: 20%"></div>
+                
+                <div class="step active flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center mb-2">1</div>
+                    <span class="text-sm font-medium text-indigo-600">Identitas</span>
+                </div>
+                <div class="step flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center mb-2">2</div>
+                    <span class="text-sm font-medium text-gray-500">Jenis Prestasi</span>
+                </div>
+                <div class="step flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center mb-2">3</div>
+                    <span class="text-sm font-medium text-gray-500">Detail Prestasi</span>
+                </div>
+                <div class="step flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center mb-2">4</div>
+                    <span class="text-sm font-medium text-gray-500">Dokumen</span>
+                </div>
+                <div class="step flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center mb-2">5</div>
+                    <span class="text-sm font-medium text-gray-500">Review & Submit</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Form -->
+        <form id="achievement-form" class="bg-white rounded-lg shadow-md p-6">
+            <!-- Section 1: Identity -->
+            <section id="identity-section" class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Identitas Siswa</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="fullname" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                        <input type="text" id="fullname" name="fullname" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    
+                    <div>
+                        <label for="nisn" class="block text-sm font-medium text-gray-700 mb-1">NISN</label>
+                        <input type="text" id="nisn" name="nisn" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    
+                    <div>
+                        <label for="school" class="block text-sm font-medium text-gray-700 mb-1">Sekolah Asal</label>
+                        <input type="text" id="school" name="school" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    
+                    <div>
+                        <label for="grade" class="block text-sm font-medium text-gray-700 mb-1">Kelas</label>
+                        <select id="grade" name="grade" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                            <option value="">Pilih Kelas</option>
+                            <option value="4">Kelas 4</option>
+                            <option value="5">Kelas 5</option>
+                            <option value="6">Kelas 6</option>
+                            <option value="7">Kelas 7</option>
+                            <option value="8">Kelas 8</option>
+                            <option value="9">Kelas 9</option>
+                            <option value="10">Kelas 10</option>
+                            <option value="11">Kelas 11</option>
+                            <option value="12">Kelas 12</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                    
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
+                        <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 2: Achievement Type -->
+            <section id="achievement-type-section" class="mb-8 hidden">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Jenis Prestasi</h2>
+                
+                <div class="space-y-4">
+                    <div class="p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-indigo-300 transition-all duration-200 achievement-type" data-type="academic-report">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-graduation-cap text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Prestasi Akademik Nilai Raport</h3>
+                                <p class="text-sm text-gray-500">Untuk prestasi berdasarkan nilai raport</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-indigo-300 transition-all duration-200 achievement-type" data-type="academic-science">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-flask text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Prestasi Akademik Bidang Sains/Teknologi/Riset/Inovasi</h3>
+                                <p class="text-sm text-gray-500">Untuk prestasi di bidang sains, teknologi, riset atau inovasi</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-indigo-300 transition-all duration-200 achievement-type" data-type="non-academic">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-trophy text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Prestasi Non-Akademik</h3>
+                                <p class="text-sm text-gray-500">Untuk prestasi di luar bidang akademik (olahraga, seni, dll)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-indigo-300 transition-all duration-200 achievement-type" data-type="religious">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-mosque text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Prestasi Keagamaan</h3>
+                                <p class="text-sm text-gray-500">Untuk prestasi di bidang keagamaan</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-indigo-300 transition-all duration-200 achievement-type" data-type="special">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-star text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Prestasi Khusus</h3>
+                                <p class="text-sm text-gray-500">Untuk prestasi khusus (literasi, pramuka, polisi cilik, dll)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="achievement-type" name="achievement-type">
+            </section>
+            
+            <!-- Section 3: Dynamic Forms -->
+            <section id="dynamic-forms-section" class="hidden">
+                <!-- Academic Report Form -->
+                <div id="academic-report-form" class="hidden fade-in">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Detail Prestasi Akademik Nilai Raport</h2>
+                    
+                    <!-- File Uploads -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Upload Dokumen</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="file-upload-container">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Raport Asli (PDF)</label>
+                                <div class="file-upload p-4 rounded-lg text-center cursor-pointer" data-type="report-original">
+                                    <i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i>
+                                    <p class="text-sm text-gray-500">Seret file ke sini atau klik untuk mengunggah</p>
+                                    <p class="text-xs text-gray-400 mt-1">Format: PDF (Maks. 5MB)</p>
+                                    <input type="file" class="hidden" accept=".pdf">
+                                </div>
+                                <div class="file-info mt-2 text-sm text-gray-600 hidden">
+                                    <span class="file-name"></span>
+                                    <span class="file-size ml-2"></span>
+                                    <button type="button" class="text-red-500 ml-2 remove-file">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="progress-bar mt-2 hidden">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="file-upload-container">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Surat Keterangan Peringkat 1-3 (PDF)</label>
+                                <div class="file-upload p-4 rounded-lg text-center cursor-pointer" data-type="rank-certificate">
+                                    <i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i>
+                                    <p class="text-sm text-gray-500">Seret file ke sini atau klik untuk mengunggah</p>
+                                    <p class="text-xs text-gray-400 mt-1">Format: PDF (Maks. 5MB)</p>
+                                    <input type="file" class="hidden" accept=".pdf">
+                                </div>
+                                <div class="file-info mt-2 text-sm text-gray-600 hidden">
+                                    <span class="file-name"></span>
+                                    <span class="file-size ml-2"></span>
+                                    <button type="button" class="text-red-500 ml-2 remove-file">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="progress-bar mt-2 hidden">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Semester Grades -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Nilai Raport 5 Semester Terakhir</h3>
+                        
+                        <div id="semester-grades-container">
+                            <!-- Semester forms will be added here dynamically -->
+                        </div>
+                        
+                        <button type="button" id="add-semester-btn" class="mt-4 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md hover:bg-indigo-200 transition-colors">
+                            <i class="fas fa-plus mr-2"></i> Tambah Semester
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Academic Science/Non-Academic Form -->
+                <div id="academic-science-form" class="hidden fade-in">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Detail Prestasi</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="achievement-name" class="block text-sm font-medium text-gray-700 mb-1">Jenis Prestasi Spesifik</label>
+                            <input type="text" id="achievement-name" name="achievement-name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        
+                        <div>
+                            <label for="achievement-level" class="block text-sm font-medium text-gray-700 mb-1">Tingkat Prestasi</label>
+                            <select id="achievement-level" name="achievement-level" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Pilih Tingkat Prestasi</option>
+                                <option value="school">Satuan Pendidikan</option>
+                                <option value="city">Kota/Kabupaten</option>
+                                <option value="province">Provinsi</option>
+                                <option value="national">Nasional</option>
+                                <option value="international">Internasional</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="organizer" class="block text-sm font-medium text-gray-700 mb-1">Penyelenggara Prestasi</label>
+                            <select id="organizer" name="organizer" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Pilih Penyelenggara</option>
+                                <option value="central-gov">Pemerintah Pusat</option>
+                                <option value="local-gov">Pemerintah Daerah</option>
+                                <option value="bumn">BUMN</option>
+                                <option value="bumd">BUMD</option>
+                                <option value="other-org">Induk Organisasi/Lembaga Lainnya</option>
+                            </select>
+                        </div>
+                        
+                        <div id="other-organizer-container" class="hidden">
+                            <label for="other-organizer" class="block text-sm font-medium text-gray-700 mb-1">Nama Organisasi/Lembaga</label>
+                            <input type="text" id="other-organizer" name="other-organizer" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <!-- Participant Type -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Peserta</label>
+                        <div class="flex space-x-6">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="participant-type" value="individual" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500" checked>
+                                <span class="ml-2 text-gray-700">Individu/Perorangan</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="participant-type" value="team" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                <span class="ml-2 text-gray-700">Beregu/Kelompok</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Achievement Date -->
+                    <div class="mb-6">
+                        <label for="achievement-date" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Perolehan Prestasi</label>
+                        <input type="date" id="achievement-date" name="achievement-date" class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    
+                    <!-- File Uploads -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Upload Dokumen</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="file-upload-container">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Sertifikat/Piagam Prestasi (PDF/Image)</label>
+                                <div class="file-upload p-4 rounded-lg text-center cursor-pointer" data-type="achievement-certificate">
+                                    <i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i>
+                                    <i class="fas fa-image text-4xl text-blue-500 mb-2"></i>
+                                    <p class="text-sm text-gray-500">Seret file ke sini atau klik untuk mengunggah</p>
+                                    <p class="text-xs text-gray-400 mt-1">Format: PDF, JPG, PNG (Maks. 5MB)</p>
+                                    <input type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png">
+                                </div>
+                                <div class="file-info mt-2 text-sm text-gray-600 hidden">
+                                    <span class="file-name"></span>
+                                    <span class="file-size ml-2"></span>
+                                    <button type="button" class="text-red-500 ml-2 remove-file">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="progress-bar mt-2 hidden">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="file-upload-container">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Foto/Video Saat Mengikuti Lomba (Image/Video)</label>
+                                <div class="file-upload p-4 rounded-lg text-center cursor-pointer" data-type="event-media">
+                                    <i class="fas fa-image text-4xl text-blue-500 mb-2"></i>
+                                    <i class="fas fa-video text-4xl text-purple-500 mb-2"></i>
+                                    <p class="text-sm text-gray-500">Seret file ke sini atau klik untuk mengunggah</p>
+                                    <p class="text-xs text-gray-400 mt-1">Format: JPG, PNG, MP4, MOV (Maks. 10MB)</p>
+                                    <input type="file" class="hidden" accept=".jpg,.jpeg,.png,.mp4,.mov">
+                                </div>
+                                <div class="file-info mt-2 text-sm text-gray-600 hidden">
+                                    <span class="file-name"></span>
+                                    <span class="file-size ml-2"></span>
+                                    <button type="button" class="text-red-500 ml-2 remove-file">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="progress-bar mt-2 hidden">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="file-upload-container">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Surat Keterangan dari Kepala Sekolah (PDF)</label>
+                                <div class="file-upload p-4 rounded-lg text-center cursor-pointer" data-type="school-letter">
+                                    <i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i>
+                                    <p class="text-sm text-gray-500">Seret file ke sini atau klik untuk mengunggah</p>
+                                    <p class="text-xs text-gray-400 mt-1">Format: PDF (Maks. 5MB)</p>
+                                    <input type="file" class="hidden" accept=".pdf">
+                                </div>
+                                <div class="file-info mt-2 text-sm text-gray-600 hidden">
+                                    <span class="file-name"></span>
+                                    <span class="file-size ml-2"></span>
+                                    <button type="button" class="text-red-500 ml-2 remove-file">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="progress-bar mt-2 hidden">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="file-upload-container">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Surat Pernyataan Kebenaran Piagam (PDF)</label>
+                                <div class="file-upload p-4 rounded-lg text-center cursor-pointer" data-type="truth-statement">
+                                    <i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i>
+                                    <p class="text-sm text-gray-500">Seret file ke sini atau klik untuk mengunggah</p>
+                                    <p class="text-xs text-gray-400 mt-1">Format: PDF (Maks. 5MB)</p>
+                                    <input type="file" class="hidden" accept=".pdf">
+                                </div>
+                                <div class="file-info mt-2 text-sm text-gray-600 hidden">
+                                    <span class="file-name"></span>
+                                    <span class="file-size ml-2"></span>
+                                    <button type="button" class="text-red-500 ml-2 remove-file">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="progress-bar mt-2 hidden">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Religious Achievement Form -->
+                <div id="religious-form" class="hidden fade-in">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Detail Prestasi Keagamaan</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="religious-type" class="block text-sm font-medium text-gray-700 mb-1">Jenis Prestasi Keagamaan</label>
+                            <select id="religious-type" name="religious-type" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Pilih Jenis Prestasi</option>
+                                <option value="hafiz">Hafiz Al-Qur'an</option>
+                                <option value="other-religious">Lomba Keagamaan Lainnya</option>
+                            </select>
+                        </div>
+                        
+                        <div id="hafiz-details" class="hidden">
+                            <label for="juz-count" class="block text-sm font-medium text-gray-700 mb-1">Jumlah Juz yang Dikuasai</label>
+                            <select id="juz-count" name="juz-count" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="">Pilih Jumlah Juz</option>
+                                <option value="3">3 Juz</option>
+                                <option value="4-6">4-6 Juz</option>
+                                <option value="7-10">7-10 Juz</option>
+                                <option value="11-30">11-30 Juz</option>
+                            </select>
+                        </div>
+                        
+                        <div id="other-religious-details" class="hidden">
+                            <label for="other-religious-detail" class="block text-sm font-medium text-gray-700 mb-1">Detail Lomba Keagamaan</label>
+                            <input type="text" id="other-religious-detail" name="other-religious-detail" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <!-- Achievement Date -->
+                    <div class="mb-6">
+                        <label for="religious-date" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Perolehan Prestasi</label>
+                        <input type="date" id="religious-date" name="religious-date" class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    
+                    <!-- File Uploads -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Upload Dokumen</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="file-upload-container">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Sertifikat/Surat Keterangan dari Kemenag (PDF)</label>
+                                <div class="file-upload p-4 rounded-lg text-center cursor-pointer" data-type="religious-certificate">
+                                    <i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i>
+                                    <p class="text-sm text-gray-500">Seret file ke sini atau klik untuk mengunggah</p>
+                                    <p class="text-xs text-gray-400 mt-1">Format: PDF (Maks. 5MB)</p>
+                                    <input type="file" class="hidden" accept=".pdf">
+                                </div>
+                                <div class="file-info mt-2 text-sm text-gray-600 hidden">
+                                    <span class="file-name"></span>
+                                    <span class="file-size ml-2"></span>
+                                    <button type="button" class="text-red-500 ml-2 remove-file">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="progress-bar mt-2 hidden">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="file-upload-container">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Surat Keterangan dari Kepala Sekolah (PDF)</label>
+                                <div class="file-upload p-4 rounded-lg text-center cursor-pointer" data-type="religious-school-letter">
+                                    <i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i>
+                                    <p class="text-sm text-gray-500">Seret file ke sini atau klik untuk mengunggah</p>
+                                    <p class="text-xs text-gray-400 mt-1">Format: PDF (Maks. 5MB)</p>
+                                    <input type="file" class="hidden" accept=".pdf">
+                                </div>
+                                <div class="file-info mt-2 text-sm text-gray-600 hidden">
+                                    <span class="file-name"></span>
+                                    <span class="file-size ml-2"></span>
+                                    <button type="button" class="text-red-500 ml-2 remove-file">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="progress-bar mt-2 hidden">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Special Achievement Form -->
+                <div id="special-form" class="hidden fade-in">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Detail Prestasi Khusus</h2>
+                    
+                    <div class="mb-6">
+                        <label for="special-type" class="block text-sm font-medium text-gray-700 mb-1">Jenis Prestasi Khusus</label>
+                        <select id="special-type" name="special-type" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="">Pilih Jenis Prestasi Khusus</option>
+                            <option value="literacy">Prestasi Literasi</option>
+                            <option value="scout-garuda">Pramuka Garuda</option>
+                            <option value="scout-jamboree">Partisipasi Kegiatan Pramuka (Jambore)</option>
+                            <option value="police">Polisi Cilik</option>
+                            <option value="other">Lainnya</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Dynamic fields based on special type -->
+                    <div id="special-type-details" class="hidden">
+                        <!-- Details will be shown based on selection -->
+                    </div>
+                    
+                    <!-- File Uploads -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-700 mb-3">Upload Dokumen Pendukung</h3>
+                        
+                        <div class="file-upload-container">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Sertifikat/Bukti Prestasi (PDF/Image)</label>
+                            <div class="file-upload p-4 rounded-lg text-center cursor-pointer" data-type="special-certificate">
+                                <i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i>
+                                <i class="fas fa-image text-4xl text-blue-500 mb-2"></i>
+                                <p class="text-sm text-gray-500">Seret file ke sini atau klik untuk mengunggah</p>
+                                <p class="text-xs text-gray-400 mt-1">Format: PDF, JPG, PNG (Maks. 5MB)</p>
+                                <input type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png">
+                            </div>
+                            <div class="file-info mt-2 text-sm text-gray-600 hidden">
+                                <span class="file-name"></span>
+                                <span class="file-size ml-2"></span>
+                                <button type="button" class="text-red-500 ml-2 remove-file">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="progress-bar mt-2 hidden">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tiered Achievement Section -->
+                <div class="mb-8 border-t pt-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Prestasi Berjenjang dan Akumulasi</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="block text-sm font-medium text-gray-700">Memiliki prestasi berjenjang?</label>
+                                <div class="relative inline-block w-10 mr-2 align-middle select-none">
+                                    <input type="checkbox" id="has-tiered" name="has-tiered" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                    <label for="has-tiered" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                </div>
+                            </div>
+                            
+                            <div id="tiered-achievements-container" class="hidden mt-4 space-y-4">
+                                <!-- Tiered achievements will be added here -->
+                            </div>
+                            
+                            <button type="button" id="add-tiered-btn" class="mt-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md hover:bg-indigo-200 transition-colors hidden">
+                                <i class="fas fa-plus mr-2"></i> Tambah Prestasi Berjenjang
+                            </button>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <label class="block text-sm font-medium text-gray-700">Memiliki lebih dari 1 bidang prestasi?</label>
+                                <div class="relative inline-block w-10 mr-2 align-middle select-none">
+                                    <input type="checkbox" id="has-multiple" name="has-multiple" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                    <label for="has-multiple" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                </div>
+                            </div>
+                            
+                            <div id="multiple-achievements-container" class="hidden mt-4 space-y-4">
+                                <!-- Additional achievements will be added here -->
+                            </div>
+                            
+                            <button type="button" id="add-achievement-btn" class="mt-2 px-4 py-2 bg-indigo-100 text-indigo-700 rounded-md hover:bg-indigo-200 transition-colors hidden">
+                                <i class="fas fa-plus mr-2"></i> Tambah Prestasi Lain
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Required Documents -->
+                <div class="mb-8 border-t pt-6">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Dokumen Wajib</h2>
+                    
+                    <div class="file-upload-container">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Surat Pernyataan Tanggung Jawab Mutlak (SPTJM) (PDF)</label>
+                        <div class="file-upload p-4 rounded-lg text-center cursor-pointer" data-type="sptjm">
+                            <i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i>
+                            <p class="text-sm text-gray-500">Seret file ke sini atau klik untuk mengunggah</p>
+                            <p class="text-xs text-gray-400 mt-1">Format: PDF (Maks. 5MB)</p>
+                            <input type="file" class="hidden" accept=".pdf">
+                        </div>
+                        <div class="file-info mt-2 text-sm text-gray-600 hidden">
+                            <span class="file-name"></span>
+                            <span class="file-size ml-2"></span>
+                            <button type="button" class="text-red-500 ml-2 remove-file">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="progress-bar mt-2 hidden">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between mt-8">
+                <button type="button" id="prev-btn" class="px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 hidden">
+                    <i class="fas fa-arrow-left mr-2"></i> Sebelumnya
+                </button>
+                
+                <button type="button" id="next-btn" class="ml-auto px-6 py-2 border border-transparent rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Selanjutnya <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                
+                <button type="submit" id="submit-btn" class="ml-auto px-6 py-2 border border-transparent rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 hidden">
+                    <i class="fas fa-check mr-2"></i> Submit
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form navigation
+            const form = document.getElementById('achievement-form');
+            const identitySection = document.getElementById('identity-section');
+            const achievementTypeSection = document.getElementById('achievement-type-section');
+            const dynamicFormsSection = document.getElementById('dynamic-forms-section');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const steps = document.querySelectorAll('.step');
+            
+            let currentStep = 1;
+            const totalSteps = 5;
+            
+            // Achievement type selection
+            const achievementTypeOptions = document.querySelectorAll('.achievement-type');
+            const achievementTypeInput = document.getElementById('achievement-type');
+            
+            // Dynamic forms
+            const academicReportForm = document.getElementById('academic-report-form');
+            const academicScienceForm = document.getElementById('academic-science-form');
+            const religiousForm = document.getElementById('religious-form');
+            const specialForm = document.getElementById('special-form');
+            
+            // Semester grades
+            const semesterGradesContainer = document.getElementById('semester-grades-container');
+            const addSemesterBtn = document.getElementById('add-semester-btn');
+            
+            // Religious achievement
+            const religiousTypeSelect = document.getElementById('religious-type');
+            const hafizDetails = document.getElementById('hafiz-details');
+            const otherReligiousDetails = document.getElementById('other-religious-details');
+            
+            // Organizer selection
+            const organizerSelect = document.getElementById('organizer');
+            const otherOrganizerContainer = document.getElementById('other-organizer-container');
+            
+            // Tiered achievements
+            const hasTieredCheckbox = document.getElementById('has-tiered');
+            const tieredAchievementsContainer = document.getElementById('tiered-achievements-container');
+            const addTieredBtn = document.getElementById('add-tiered-btn');
+            
+            // Multiple achievements
+            const hasMultipleCheckbox = document.getElementById('has-multiple');
+            const multipleAchievementsContainer = document.getElementById('multiple-achievements-container');
+            const addAchievementBtn = document.getElementById('add-achievement-btn');
+            
+            // File upload functionality
+            const fileUploads = document.querySelectorAll('.file-upload');
+            
+            // Initialize form
+            initForm();
+            
+            function initForm() {
+                // Navigation
+                nextBtn.addEventListener('click', goToNextStep);
+                prevBtn.addEventListener('click', goToPrevStep);
+                
+                // Achievement type selection
+                achievementTypeOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        // Remove active class from all options
+                        achievementTypeOptions.forEach(opt => {
+                            opt.classList.remove('border-indigo-500', 'bg-indigo-50');
+                        });
+                        
+                        // Add active class to selected option
+                        this.classList.add('border-indigo-500', 'bg-indigo-50');
+                        
+                        // Set the achievement type value
+                        achievementTypeInput.value = this.dataset.type;
+                        
+                        // Show the appropriate form
+                        showDynamicForm(this.dataset.type);
+                    });
+                });
+                
+                // Semester grades
+                addSemesterBtn.addEventListener('click', addSemesterForm);
+                
+                // Religious achievement type change
+                religiousTypeSelect.addEventListener('change', function() {
+                    if (this.value === 'hafiz') {
+                        hafizDetails.classList.remove('hidden');
+                        otherReligiousDetails.classList.add('hidden');
+                    } else if (this.value === 'other-religious') {
+                        hafizDetails.classList.add('hidden');
+                        otherReligiousDetails.classList.remove('hidden');
+                    } else {
+                        hafizDetails.classList.add('hidden');
+                        otherReligiousDetails.classList.add('hidden');
+                    }
+                });
+                
+                // Organizer selection
+                organizerSelect.addEventListener('change', function() {
+                    if (this.value === 'other-org') {
+                        otherOrganizerContainer.classList.remove('hidden');
+                    } else {
+                        otherOrganizerContainer.classList.add('hidden');
+                    }
+                });
+                
+                // Tiered achievements
+                hasTieredCheckbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        tieredAchievementsContainer.classList.remove('hidden');
+                        addTieredBtn.classList.remove('hidden');
+                        addTieredAchievement();
+                    } else {
+                        tieredAchievementsContainer.classList.add('hidden');
+                        addTieredBtn.classList.add('hidden');
+                        tieredAchievementsContainer.innerHTML = '';
+                    }
+                });
+                
+                addTieredBtn.addEventListener('click', addTieredAchievement);
+                
+                // Multiple achievements
+                hasMultipleCheckbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        multipleAchievementsContainer.classList.remove('hidden');
+                        addAchievementBtn.classList.remove('hidden');
+                        addAdditionalAchievement();
+                    } else {
+                        multipleAchievementsContainer.classList.add('hidden');
+                        addAchievementBtn.classList.add('hidden');
+                        multipleAchievementsContainer.innerHTML = '';
+                    }
+                });
+                
+                addAchievementBtn.addEventListener('click', addAdditionalAchievement);
+                
+                // File uploads
+                setupFileUploads();
+            }
+            
+            function goToNextStep() {
+                if (validateCurrentStep()) {
+                    currentStep++;
+                    updateFormDisplay();
+                }
+            }
+            
+            function goToPrevStep() {
+                currentStep--;
+                updateFormDisplay();
+            }
+            
+            function validateCurrentStep() {
+                // Simple validation for demo purposes
+                if (currentStep === 1) {
+                    const requiredFields = identitySection.querySelectorAll('[required]');
+                    let isValid = true;
+                    
+                    requiredFields.forEach(field => {
+                        if (!field.value) {
+                            isValid = false;
+                            field.classList.add('border-red-500');
+                        } else {
+                            field.classList.remove('border-red-500');
+                        }
+                    });
+                    
+                    if (!isValid) {
+                        alert('Silakan lengkapi semua field yang wajib diisi');
+                        return false;
+                    }
+                } else if (currentStep === 2) {
+                    if (!achievementTypeInput.value) {
+                        alert('Silakan pilih jenis prestasi');
+                        return false;
+                    }
+                }
+                
+                return true;
+            }
+            
+            function updateFormDisplay() {
+                // Update progress bar
+                const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+                
+                // Update step indicators
+                steps.forEach((step, index) => {
+                    const stepNumber = index + 1;
+                    const stepCircle = step.querySelector('div');
+                    
+                    if (stepNumber < currentStep) {
+                        stepCircle.classList.remove('bg-gray-200', 'text-gray-600');
+                        stepCircle.classList.add('bg-indigo-600', 'text-white');
+                        step.querySelector('span').classList.remove('text-gray-500');
+                        step.querySelector('span').classList.add('text-indigo-600');
+                    } else if (stepNumber === currentStep) {
+                        stepCircle.classList.remove('bg-gray-200', 'text-gray-600');
+                        stepCircle.classList.add('bg-indigo-600', 'text-white');
+                        step.querySelector('span').classList.remove('text-gray-500');
+                        step.querySelector('span').classList.add('text-indigo-600');
+                    } else {
+                        stepCircle.classList.remove('bg-indigo-600', 'text-white');
+                        stepCircle.classList.add('bg-gray-200', 'text-gray-600');
+                        step.querySelector('span').classList.remove('text-indigo-600');
+                        step.querySelector('span').classList.add('text-gray-500');
+                    }
+                });
+                
+                // Show/hide sections based on current step
+                if (currentStep === 1) {
+                    identitySection.classList.remove('hidden');
+                    achievementTypeSection.classList.add('hidden');
+                    dynamicFormsSection.classList.add('hidden');
+                    prevBtn.classList.add('hidden');
+                    nextBtn.classList.remove('hidden');
+                    submitBtn.classList.add('hidden');
+                } else if (currentStep === 2) {
+                    identitySection.classList.add('hidden');
+                    achievementTypeSection.classList.remove('hidden');
+                    dynamicFormsSection.classList.add('hidden');
+                    prevBtn.classList.remove('hidden');
+                    nextBtn.classList.remove('hidden');
+                    submitBtn.classList.add('hidden');
+                } else if (currentStep === 3) {
+                    identitySection.classList.add('hidden');
+                    achievementTypeSection.classList.add('hidden');
+                    dynamicFormsSection.classList.remove('hidden');
+                    prevBtn.classList.remove('hidden');
+                    nextBtn.classList.remove('hidden');
+                    submitBtn.classList.add('hidden');
+                } else if (currentStep === 4) {
+                    // Documents section
+                    prevBtn.classList.remove('hidden');
+                    nextBtn.classList.remove('hidden');
+                    submitBtn.classList.add('hidden');
+                } else if (currentStep === 5) {
+                    // Review section
+                    prevBtn.classList.remove('hidden');
+                    nextBtn.classList.add('hidden');
+                    submitBtn.classList.remove('hidden');
+                }
+            }
+            
+            function showDynamicForm(type) {
+                // Hide all forms first
+                academicReportForm.classList.add('hidden');
+                academicScienceForm.classList.add('hidden');
+                religiousForm.classList.add('hidden');
+                specialForm.classList.add('hidden');
+                
+                // Show the selected form
+                if (type === 'academic-report') {
+                    academicReportForm.classList.remove('hidden');
+                } else if (type === 'academic-science' || type === 'non-academic') {
+                    academicScienceForm.classList.remove('hidden');
+                } else if (type === 'religious') {
+                    religiousForm.classList.remove('hidden');
+                } else if (type === 'special') {
+                    specialForm.classList.remove('hidden');
+                }
+            }
+            
+            function addSemesterForm() {
+                const semesterCount = semesterGradesContainer.children.length;
+                
+                if (semesterCount >= 5) {
+                    alert('Maksimal 5 semester yang dapat ditambahkan');
+                    return;
+                }
+                
+                const semesterOptions = [
+                    'Kelas 4 Semester 1',
+                    'Kelas 4 Semester 2',
+                    'Kelas 5 Semester 1',
+                    'Kelas 5 Semester 2',
+                    'Kelas 6 Semester 1',
+                    'Kelas 6 Semester 2',
+                    'Kelas 7 Semester 1',
+                    'Kelas 7 Semester 2',
+                    'Kelas 8 Semester 1',
+                    'Kelas 8 Semester 2',
+                    'Kelas 9 Semester 1',
+                    'Kelas 9 Semester 2',
+                    'Kelas 10 Semester 1',
+                    'Kelas 10 Semester 2',
+                    'Kelas 11 Semester 1',
+                    'Kelas 11 Semester 2',
+                    'Kelas 12 Semester 1',
+                    'Kelas 12 Semester 2'
+                ];
+                
+                const semesterForm = document.createElement('div');
+                semesterForm.className = 'semester-form bg-gray-50 p-4 rounded-lg mb-4';
+                semesterForm.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="font-medium text-gray-700">Semester ${semesterCount + 1}</h4>
+                        <button type="button" class="text-red-500 remove-semester">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Semester</label>
+                            <select name="semester[]" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                ${semesterOptions.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Matematika</label>
+                            <input type="number" name="math[]" min="0" max="100" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Bahasa Indonesia</label>
+                            <input type="number" name="indonesian[]" min="0" max="100" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Bahasa Inggris</label>
+                            <input type="number" name="english[]" min="0" max="100" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">IPA</label>
+                            <input type="number" name="science[]" min="0" max="100" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">IPS</label>
+                            <input type="number" name="social[]" min="0" max="100" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">PPKn</label>
+                            <input type="number" name="civics[]" min="0" max="100" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+                `;
+                
+                semesterGradesContainer.appendChild(semesterForm);
+                
+                // Add event listener to remove button
+                const removeBtn = semesterForm.querySelector('.remove-semester');
+                removeBtn.addEventListener('click', function() {
+                    semesterForm.remove();
+                });
+            }
+            
+            function addTieredAchievement() {
+                const achievementCount = tieredAchievementsContainer.children.length;
+                
+                const achievementDiv = document.createElement('div');
+                achievementDiv.className = 'bg-gray-50 p-4 rounded-lg border border-gray-200';
+                achievementDiv.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="font-medium text-gray-700">Prestasi Berjenjang ${achievementCount + 1}</h4>
+                        <button type="button" class="text-red-500 remove-tiered">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tingkat Prestasi</label>
+                            <select name="tiered-level[]" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="city">Kota/Kabupaten</option>
+                                <option value="province">Provinsi</option>
+                                <option value="national">Nasional</option>
+                                <option value="international">Internasional</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Peringkat</label>
+                            <select name="tiered-rank[]" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="1">Juara 1</option>
+                                <option value="2">Juara 2</option>
+                                <option value="3">Juara 3</option>
+                                <option value="participation">Partisipasi</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 file-upload-container">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Bukti Prestasi (PDF/Image)</label>
+                        <div class="file-upload p-4 rounded-lg text-center cursor-pointer" data-type="tiered-proof-${achievementCount}">
+                            <i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i>
+                            <i class="fas fa-image text-4xl text-blue-500 mb-2"></i>
+                            <p class="text-sm text-gray-500">Seret file ke sini atau klik untuk mengunggah</p>
+                            <p class="text-xs text-gray-400 mt-1">Format: PDF, JPG, PNG (Maks. 5MB)</p>
+                            <input type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png" name="tiered-proof[]">
+                        </div>
+                        <div class="file-info mt-2 text-sm text-gray-600 hidden">
+                            <span class="file-name"></span>
+                            <span class="file-size ml-2"></span>
+                            <button type="button" class="text-red-500 ml-2 remove-file">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="progress-bar mt-2 hidden">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                `;
+                
+                tieredAchievementsContainer.appendChild(achievementDiv);
+                
+                // Add event listener to remove button
+                const removeBtn = achievementDiv.querySelector('.remove-tiered');
+                removeBtn.addEventListener('click', function() {
+                    achievementDiv.remove();
+                });
+                
+                // Setup file upload for this achievement
+                setupFileUpload(achievementDiv.querySelector('.file-upload'));
+            }
+            
+            function addAdditionalAchievement() {
+                const achievementCount = multipleAchievementsContainer.children.length;
+                
+                const achievementDiv = document.createElement('div');
+                achievementDiv.className = 'bg-gray-50 p-4 rounded-lg border border-gray-200';
+                achievementDiv.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="font-medium text-gray-700">Prestasi Tambahan ${achievementCount + 1}</h4>
+                        <button type="button" class="text-red-500 remove-achievement">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Prestasi</label>
+                            <select name="additional-type[]" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="academic-report">Prestasi Akademik Nilai Raport</option>
+                                <option value="academic-science">Prestasi Akademik Bidang Sains/Teknologi/Riset/Inovasi</option>
+                                <option value="non-academic">Prestasi Non-Akademik</option>
+                                <option value="religious">Prestasi Keagamaan</option>
+                                <option value="special">Prestasi Khusus</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Prestasi</label>
+                            <input type="text" name="additional-name[]" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                    </div>
+                    
+                    <div class="file-upload-container">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Bukti Prestasi (PDF/Image)</label>
+                        <div class="file-upload p-4 rounded-lg text-center cursor-pointer" data-type="additional-proof-${achievementCount}">
+                            <i class="fas fa-file-pdf text-4xl text-red-500 mb-2"></i>
+                            <i class="fas fa-image text-4xl text-blue-500 mb-2"></i>
+                            <p class="text-sm text-gray-500">Seret file ke sini atau klik untuk mengunggah</p>
+                            <p class="text-xs text-gray-400 mt-1">Format: PDF, JPG, PNG (Maks. 5MB)</p>
+                            <input type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png" name="additional-proof[]">
+                        </div>
+                        <div class="file-info mt-2 text-sm text-gray-600 hidden">
+                            <span class="file-name"></span>
+                            <span class="file-size ml-2"></span>
+                            <button type="button" class="text-red-500 ml-2 remove-file">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="progress-bar mt-2 hidden">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                `;
+                
+                multipleAchievementsContainer.appendChild(achievementDiv);
+                
+                // Add event listener to remove button
+                const removeBtn = achievementDiv.querySelector('.remove-achievement');
+                removeBtn.addEventListener('click', function() {
+                    achievementDiv.remove();
+                });
+                
+                // Setup file upload for this achievement
+                setupFileUpload(achievementDiv.querySelector('.file-upload'));
+            }
+            
+            function setupFileUploads() {
+                fileUploads.forEach(upload => {
+                    setupFileUpload(upload);
+                });
+            }
+            
+            function setupFileUpload(upload) {
+                const fileInput = upload.querySelector('input[type="file"]');
+                const fileInfo = upload.parentElement.querySelector('.file-info');
+                const fileName = fileInfo.querySelector('.file-name');
+                const fileSize = fileInfo.querySelector('.file-size');
+                const removeBtn = fileInfo.querySelector('.remove-file');
+                const progressBar = upload.parentElement.querySelector('.progress-bar');
+                
+                // Click event
+                upload.addEventListener('click', function(e) {
+                    if (e.target !== fileInput) {
+                        fileInput.click();
+                    }
+                });
+                
+                // Drag and drop events
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    upload.addEventListener(eventName, preventDefaults, false);
+                });
+                
+                function preventDefaults(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    upload.addEventListener(eventName, highlight, false);
+                });
+                
+                ['dragleave', 'drop'].forEach(eventName => {
+                    upload.addEventListener(eventName, unhighlight, false);
+                });
+                
+                function highlight() {
+                    upload.classList.add('dragover');
+                }
+                
+                function unhighlight() {
+                    upload.classList.remove('dragover');
+                }
+                
+                // File input change
+                fileInput.addEventListener('change', function() {
+                    if (this.files.length) {
+                        handleFiles(this.files);
+                    }
+                });
+                
+                // Drop event
+                upload.addEventListener('drop', function(e) {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    
+                    if (files.length) {
+                        fileInput.files = files;
+                        handleFiles(files);
+                    }
+                });
+                
+                // Remove file
+                removeBtn.addEventListener('click', function() {
+                    fileInput.value = '';
+                    fileInfo.classList.add('hidden');
+                    upload.classList.remove('hidden');
+                });
+                
+                function handleFiles(files) {
+                    const file = files[0];
+                    const fileType = upload.dataset.type;
+                    const maxSize = fileType.includes('video') ? 10 * 1024 * 1024 : 5 * 1024 * 1024; // 10MB for video, 5MB for others
+                    
+                    // Validate file type
+                    const validTypes = {
+                        'pdf': ['application/pdf'],
+                        'image': ['image/jpeg', 'image/png', 'image/jpg'],
+                        'video': ['video/mp4', 'video/quicktime']
+                    };
+                    
+                    let isValidType = false;
+                    
+                    if (fileType.includes('pdf')) {
+                        isValidType = validTypes.pdf.includes(file.type);
+                    } else if (fileType.includes('image')) {
+                        isValidType = validTypes.image.includes(file.type);
+                    } else if (fileType.includes('video')) {
+                        isValidType = validTypes.video.includes(file.type);
+                    } else {
+                        // Default to PDF and image
+                        isValidType = validTypes.pdf.includes(file.type) || validTypes.image.includes(file.type);
+                    }
+                    
+                    // Validate file size
+                    const isValidSize = file.size <= maxSize;
+                    
+                    if (!isValidType) {
+                        alert('Format file tidak valid. Silakan unggah file dengan format yang benar.');
+                        return;
+                    }
+                    
+                    if (!isValidSize) {
+                        alert('Ukuran file terlalu besar. Silakan unggah file dengan ukuran yang lebih kecil.');
+                        return;
+                    }
+                    
+                    // Show file info
+                    fileName.textContent = file.name;
+                    fileSize.textContent = formatFileSize(file.size);
+                    fileInfo.classList.remove('hidden');
+                    upload.classList.add('hidden');
+                    
+                    // Simulate upload progress
+                    progressBar.classList.remove('hidden');
+                    const progressFill = progressBar.querySelector('.progress-fill');
+                    
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += Math.random() * 10;
+                        if (progress >= 100) {
+                            progress = 100;
+                            clearInterval(interval);
+                        }
+                        progressFill.style.width = `${progress}%`;
+                    }, 200);
+                }
+                
+                function formatFileSize(bytes) {
+                    if (bytes === 0) return '0 Bytes';
+                    
+                    const k = 1024;
+                    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                    const i = Math.floor(Math.log(bytes) / Math.log(k));
+                    
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                }
+            }
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Here you would typically send the form data to the server
+                alert('Formulir berhasil dikirim! Data akan diproses lebih lanjut.');
+                
+                // Reset form and go back to step 1
+                form.reset();
+                currentStep = 1;
+                updateFormDisplay();
+                
+                // Clear dynamic elements
+                semesterGradesContainer.innerHTML = '';
+                tieredAchievementsContainer.innerHTML = '';
+                multipleAchievementsContainer.innerHTML = '';
+                
+                // Reset file uploads
+                document.querySelectorAll('.file-info').forEach(info => {
+                    info.classList.add('hidden');
+                });
+                
+                document.querySelectorAll('.file-upload').forEach(upload => {
+                    upload.classList.remove('hidden');
+                });
+                
+                document.querySelectorAll('.progress-bar').forEach(bar => {
+                    bar.classList.add('hidden');
+                    bar.querySelector('.progress-fill').style.width = '0%';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
