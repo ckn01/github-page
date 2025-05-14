@@ -29,6 +29,11 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -115,6 +120,21 @@
                 </div>
             </div>
 
+            <!-- Daily Trends Chart -->
+            <div class="bg-white rounded-xl shadow-md p-6 card-hover transition-all fade-in mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold">Daily Status Trends</h2>
+                    <div class="flex space-x-2">
+                        <button class="bg-blue-100 text-blue-600 hover:bg-blue-200 px-3 py-1 rounded-lg text-sm transition-all">
+                            <i class="fas fa-calendar-alt mr-1"></i> Last 7 Days
+                        </button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="dailyTrendsChart"></canvas>
+                </div>
+            </div>
+
             <!-- Charts Section -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <!-- Status Distribution Bar Chart -->
@@ -127,7 +147,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="h-80">
+                    <div class="chart-container">
                         <canvas id="statusBarChart"></canvas>
                     </div>
                 </div>
@@ -142,7 +162,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="h-80">
+                    <div class="chart-container">
                         <canvas id="regionPieChart"></canvas>
                     </div>
                 </div>
@@ -209,7 +229,16 @@
                 { "tanggal": "2025-05-08T00:00:00.000Z", "status_konfirmasi_id": 22, "nama": "KIRIM DUKCAPIL", "jumlah": "344" },
                 { "tanggal": "2025-05-08T00:00:00.000Z", "status_konfirmasi_id": 16, "nama": "PILIH SEKOLAH", "jumlah": "507" },
                 { "tanggal": "2025-05-09T00:00:00.000Z", "status_konfirmasi_id": 21, "nama": "PERBAIKAN DUKCAPIL", "jumlah": "10" },
-                { "tanggal": "2025-05-09T00:00:00.000Z", "status_konfirmasi_id": 22, "nama": "KIRIM DUKCAPIL", "jumlah": "500" }
+                { "tanggal": "2025-05-09T00:00:00.000Z", "status_konfirmasi_id": 22, "nama": "KIRIM DUKCAPIL", "jumlah": "500" },
+                { "tanggal": "2025-05-09T00:00:00.000Z", "status_konfirmasi_id": 16, "nama": "PILIH SEKOLAH", "jumlah": "150" },
+                { "tanggal": "2025-05-10T00:00:00.000Z", "status_konfirmasi_id": 22, "nama": "KIRIM DUKCAPIL", "jumlah": "420" },
+                { "tanggal": "2025-05-10T00:00:00.000Z", "status_konfirmasi_id": 16, "nama": "PILIH SEKOLAH", "jumlah": "230" },
+                { "tanggal": "2025-05-10T00:00:00.000Z", "status_konfirmasi_id": 21, "nama": "PERBAIKAN DUKCAPIL", "jumlah": "25" },
+                { "tanggal": "2025-05-11T00:00:00.000Z", "status_konfirmasi_id": 22, "nama": "KIRIM DUKCAPIL", "jumlah": "380" },
+                { "tanggal": "2025-05-11T00:00:00.000Z", "status_konfirmasi_id": 16, "nama": "PILIH SEKOLAH", "jumlah": "180" },
+                { "tanggal": "2025-05-12T00:00:00.000Z", "status_konfirmasi_id": 22, "nama": "KIRIM DUKCAPIL", "jumlah": "450" },
+                { "tanggal": "2025-05-12T00:00:00.000Z", "status_konfirmasi_id": 16, "nama": "PILIH SEKOLAH", "jumlah": "210" },
+                { "tanggal": "2025-05-12T00:00:00.000Z", "status_konfirmasi_id": 21, "nama": "PERBAIKAN DUKCAPIL", "jumlah": "18" }
             ],
             "rekapStatusWilayah": [
                 { "nama_provinsi": "Prov. Banten", "status_22_kirim_dukcapil": "1", "status_16_pilih_sekolah": "0" },
@@ -250,7 +279,7 @@
                 { "nama_provinsi": "Prov. Jawa Barat", "status_22_kirim_dukcapil": "3", "status_16_pilih_sekolah": "0" },
                 { "nama_provinsi": "Prov. Jawa Barat", "status_22_kirim_dukcapil": "10", "status_16_pilih_sekolah": "5" },
                 { "nama_provinsi": "Prov. Jawa Barat", "status_22_kirim_dukcapil": "32", "status_16_pilih_sekolah": "12" },
-                { "nama_provinsi": "Prov. Jawa Barat", "status_22_kirim_dukcapil": "2", "status_16_pilih_sekolah": "0" },
+                { "nama_provinsi": "Prop. Jawa Barat", "status_22_kirim_dukcapil": "2", "status_16_pilih_sekolah": "0" },
                 { "nama_provinsi": "Prov. Jawa Barat", "status_22_kirim_dukcapil": "0", "status_16_pilih_sekolah": "1" },
                 { "nama_provinsi": "Prov. Jawa Barat", "status_22_kirim_dukcapil": "1", "status_16_pilih_sekolah": "3" },
                 { "nama_provinsi": "Prov. Jawa Barat", "status_22_kirim_dukcapil": "129", "status_16_pilih_sekolah": "70" },
@@ -258,7 +287,6 @@
                 { "nama_provinsi": "Prov. Jawa Barat", "status_22_kirim_dukcapil": "16", "status_16_pilih_sekolah": "4" },
                 { "nama_provinsi": "Prov. Jawa Barat", "status_22_kirim_dukcapil": "0", "status_16_pilih_sekolah": "1" },
                 { "nama_provinsi": "Prov. Jawa Barat", "status_22_kirim_dukcapil": "1", "status_16_pilih_sekolah": "0" },
-                { "nama_provinsi": "Prov. Jawa Barat", "status_22_kirim_dukcapil": "0", "status_16_pilih_sekolah": "1" },
                 { "nama_provinsi": "Prov. Jawa Barat", "status_22_kirim_dukcapil": "0", "status_16_pilih_sekolah": "1" }
             ]
         };
@@ -266,6 +294,7 @@
         // Chart instances
         let statusBarChart;
         let regionPieChart;
+        let dailyTrendsChart;
 
         // Function to fetch data from API
         async function fetchData() {
@@ -315,7 +344,7 @@
             document.getElementById('statusPilihSekolah').textContent = totalPilihSekolah.toLocaleString();
             document.getElementById('statusPerbaikanDukcapil').textContent = totalPerbaikanDukcapil.toLocaleString();
             
-            // Prepare data for charts
+            // Prepare data for status distribution chart
             const statusData = {
                 labels: ['Kirim Dukcapil', 'Pilih Sekolah', 'Perbaikan Dukcapil'],
                 datasets: [{
@@ -334,6 +363,9 @@
                     borderWidth: 1
                 }]
             };
+            
+            // Prepare data for daily trends chart
+            const dailyData = prepareDailyTrendsData(data.history);
             
             // Calculate regional distribution
             const regionCounts = {};
@@ -382,7 +414,7 @@
             };
             
             // Update or create charts
-            updateCharts(statusData, regionChartData);
+            updateCharts(statusData, regionChartData, dailyData);
             
             // Update recent activity
             updateRecentActivity(data.history);
@@ -391,10 +423,83 @@
             updateTopRegions(sortedRegions);
         }
         
+        // Function to prepare daily trends data
+        function prepareDailyTrendsData(history) {
+            // Group data by date and status
+            const dateMap = {};
+            
+            history.forEach(item => {
+                const date = new Date(item.tanggal);
+                const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
+                const statusId = item.status_konfirmasi_id;
+                const jumlah = parseInt(item.jumlah);
+                
+                if (!dateMap[dateKey]) {
+                    dateMap[dateKey] = {
+                        date: date,
+                        kirimDukcapil: 0,
+                        pilihSekolah: 0,
+                        perbaikanDukcapil: 0
+                    };
+                }
+                
+                if (statusId === 22) {
+                    dateMap[dateKey].kirimDukcapil += jumlah;
+                } else if (statusId === 16) {
+                    dateMap[dateKey].pilihSekolah += jumlah;
+                } else if (statusId === 21) {
+                    dateMap[dateKey].perbaikanDukcapil += jumlah;
+                }
+            });
+            
+            // Sort dates chronologically
+            const sortedDates = Object.values(dateMap).sort((a, b) => a.date - b.date);
+            
+            // Extract labels and datasets
+            const labels = sortedDates.map(item => {
+                return item.date.toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'short'
+                });
+            });
+            
+            const kirimDukcapilData = sortedDates.map(item => item.kirimDukcapil);
+            const pilihSekolahData = sortedDates.map(item => item.pilihSekolah);
+            const perbaikanDukcapilData = sortedDates.map(item => item.perbaikanDukcapil);
+            
+            return {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Kirim Dukcapil',
+                        data: kirimDukcapilData,
+                        backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Pilih Sekolah',
+                        data: pilihSekolahData,
+                        backgroundColor: 'rgba(139, 92, 246, 0.7)',
+                        borderColor: 'rgba(139, 92, 246, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Perbaikan Dukcapil',
+                        data: perbaikanDukcapilData,
+                        backgroundColor: 'rgba(234, 179, 8, 0.7)',
+                        borderColor: 'rgba(234, 179, 8, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            };
+        }
+        
         // Function to update or create charts
-        function updateCharts(statusData, regionData) {
+        function updateCharts(statusData, regionData, dailyData) {
             const statusCtx = document.getElementById('statusBarChart').getContext('2d');
             const regionCtx = document.getElementById('regionPieChart').getContext('2d');
+            const dailyCtx = document.getElementById('dailyTrendsChart').getContext('2d');
             
             // Destroy existing charts if they exist
             if (statusBarChart) {
@@ -402,6 +507,9 @@
             }
             if (regionPieChart) {
                 regionPieChart.destroy();
+            }
+            if (dailyTrendsChart) {
+                dailyTrendsChart.destroy();
             }
             
             // Create new charts
@@ -445,6 +553,36 @@
                             callbacks: {
                                 label: function(context) {
                                     return `${context.label}: ${context.raw.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            dailyTrendsChart = new Chart(dailyCtx, {
+                type: 'bar',
+                data: dailyData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw.toLocaleString()}`;
                                 }
                             }
                         }
